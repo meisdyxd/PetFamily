@@ -10,7 +10,7 @@ public class VolunteerConfiguration : IEntityTypeConfiguration<Volunteer>
     {
         builder.ToTable("volunteers");
 
-        builder.HasKey(v => v.Id);
+        builder.HasKey(v => v.Id).HasName("pk_volunteer");
 
         builder.ComplexProperty(v => v.FullName, fb =>
         {
@@ -63,7 +63,7 @@ public class VolunteerConfiguration : IEntityTypeConfiguration<Volunteer>
 
         builder.OwnsMany(v => v.SocialNetworks, sb =>
         {
-            sb.ToJson();
+            sb.ToJson("social_networks");
 
             sb.Property(p => p.Name)
                 .IsRequired()
@@ -78,7 +78,7 @@ public class VolunteerConfiguration : IEntityTypeConfiguration<Volunteer>
 
         builder.OwnsMany(v => v.Requisits, rb =>
         {
-            rb.ToJson();
+            rb.ToJson("requisits");
 
             rb.Property(p => p.Name)
                 .IsRequired()

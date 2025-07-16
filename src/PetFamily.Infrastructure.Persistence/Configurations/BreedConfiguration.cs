@@ -8,7 +8,9 @@ public class BreedConfiguration : IEntityTypeConfiguration<Breed>
 {
     public void Configure(EntityTypeBuilder<Breed> builder)
     {
-        builder.HasKey(b => b.Id);
+        builder.ToTable("breeds");
+
+        builder.HasKey(b => b.Id).HasName("pk_breed");
 
         builder.Property(b => b.Name)
             .IsRequired()

@@ -4,12 +4,17 @@ namespace PetFamily.Domain.SpeciesManagement;
 
 public class Breed: Entity<Guid>
 {
-    protected Breed(Guid id): base(id) { }
+    private Breed() : base(Guid.NewGuid()) { }
 
-    public Breed(string name)
+    private Breed(string name)
     {
         Name = name;
     }
 
     public string Name { get; private set; }
+
+    public Breed Create(string name)
+    {
+        return new(name);
+    }
 }

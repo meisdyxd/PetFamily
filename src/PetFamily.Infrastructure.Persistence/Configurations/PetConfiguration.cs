@@ -12,7 +12,7 @@ public class PetConfiguration : IEntityTypeConfiguration<Pet>
     {
         builder.ToTable("pets");
 
-        builder.HasKey(p => p.Id);
+        builder.HasKey(p => p.Id).HasName("pk_pet");
 
         builder.Property(p => p.Moniker)
             .HasMaxLength(Constants.MAX_MONIKER_LENGTH)
@@ -106,7 +106,7 @@ public class PetConfiguration : IEntityTypeConfiguration<Pet>
 
         builder.OwnsMany(p => p.Requisits, rb =>
         {
-            rb.ToJson();
+            rb.ToJson("requisits");
 
             rb.Property(p => p.Name)
                 .IsRequired()

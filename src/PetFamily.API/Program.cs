@@ -1,12 +1,17 @@
+using PetFamily.API;
+
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+var services = builder.Services;
+var configurations = builder.Configuration;
 
-builder.Services.AddControllers();
+services
+    .AddLayers(configurations)
+    .AddControllers();
+
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 
 app.UseHttpsRedirection();
 

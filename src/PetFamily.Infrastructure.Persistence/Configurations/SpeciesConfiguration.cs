@@ -10,11 +10,11 @@ public class SpeciesConfiguration : IEntityTypeConfiguration<Species>
     {
         builder.ToTable("species");
 
-        builder.HasKey(s => s.Id);
+        builder.HasKey(s => s.Id).HasName("pk_species");
 
         builder.Property(s => s.Name)
             .IsRequired()
-            .HasColumnName("Name");
+            .HasColumnName("name");
 
         builder.HasMany(s => s.Breeds)
             .WithOne()
