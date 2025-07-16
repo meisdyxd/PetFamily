@@ -7,6 +7,10 @@ namespace PetFamily.Domain.VolunteerManager;
 
 public class Volunteer: Entity<Guid>
 {
+    private readonly List<SocialNetwork> _socialNetworks = [];
+    private readonly List<Requisit> _requisits = [];
+    private readonly List<Pet> _pets = [];
+
     //EF Core
     protected Volunteer(Guid id) : base(id) { }
 
@@ -15,9 +19,7 @@ public class Volunteer: Entity<Guid>
         Email email,
         Description description,
         EmployeeExperience employeeExperience,
-        TelephoneNumber telephoneNumber,
-        IEnumerable<SocialNetwork> socialNetworks,
-        IEnumerable<Requisit> requisits)
+        TelephoneNumber telephoneNumber)
     {
         FullName = fullName;
         Email = email;
@@ -31,27 +33,23 @@ public class Volunteer: Entity<Guid>
     public Description Description { get; private set; }
     public EmployeeExperience EmployeeExperience { get; private set; }
     public TelephoneNumber TelephoneNumber { get; private set; }
-    public IReadOnlyList<SocialNetwork> SocialNetworks { get; private set; } = [];
-    public IReadOnlyList<Requisit> Requisits { get; private set; } = [];
-    public IReadOnlyList<Pet> Pets { get; private set; } = [];
+    public IReadOnlyList<SocialNetwork> SocialNetworks => _socialNetworks;
+    public IReadOnlyList<Requisit> Requisits => _requisits;
+    public IReadOnlyList<Pet> Pets => _pets;
 
     public Volunteer Create(
         FullName fullName,
         Email email,
         Description description,
         EmployeeExperience employeeExperience,
-        TelephoneNumber telephoneNumber,
-        IReadOnlyList<SocialNetwork>? socialNetworks = null,
-        IReadOnlyList<Requisit>? requisits = null)
+        TelephoneNumber telephoneNumber)
     {
         return new(
             fullName, 
             email, 
             description, 
             employeeExperience, 
-            telephoneNumber, 
-            socialNetworks ?? [], 
-            requisits ?? []);
+            telephoneNumber);
     }
 
     public int CountPetsHomeless() =>

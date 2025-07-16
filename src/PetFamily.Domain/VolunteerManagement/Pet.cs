@@ -7,8 +7,9 @@ namespace PetFamily.Domain.VolunteerManager;
 
 public class Pet : Entity<Guid>
 {
-    //ef core
+    private readonly List<Requisit> _requisits = [];
 
+    //ef core
     protected Pet(Guid id): base(id) { }
 
     private Pet(string moniker,
@@ -23,8 +24,7 @@ public class Pet : Entity<Guid>
         TelephoneNumber ownerTelephoneNumber, 
         bool isCastrated, 
         DateTime birthDate, 
-        bool isVaccinated, 
-        IReadOnlyList<Requisit> requisits)
+        bool isVaccinated)
     {
         Moniker = moniker;
         Species = species;
@@ -40,7 +40,6 @@ public class Pet : Entity<Guid>
         BirthDate = birthDate;
         IsVaccinated = isVaccinated;
         Status = PetStatus.PendingHelp;
-        Requisits = requisits;
         CreatedAt = DateTime.UtcNow;
     }
 
@@ -58,7 +57,7 @@ public class Pet : Entity<Guid>
     public DateTime BirthDate { get; private set; }
     public bool IsVaccinated { get; private set; }
     public PetStatus Status { get; private set; }
-    public IReadOnlyList<Requisit> Requisits { get; private set; } = [];
+    public IReadOnlyList<Requisit> Requisits => _requisits;
     public DateTime CreatedAt { get; private set; }
 
     public Pet Create(
@@ -74,8 +73,7 @@ public class Pet : Entity<Guid>
         TelephoneNumber telephoneNumber,
         bool isCastrated,
         DateTime birthDate,
-        bool isVaccinated,
-        IReadOnlyList<Requisit>? requisits)
+        bool isVaccinated)
     {
         return new(
             moniker,
@@ -90,7 +88,6 @@ public class Pet : Entity<Guid>
             telephoneNumber,
             isCastrated,
             birthDate,
-            isVaccinated,
-            requisits ?? []);
+            isVaccinated);
     }
 }
