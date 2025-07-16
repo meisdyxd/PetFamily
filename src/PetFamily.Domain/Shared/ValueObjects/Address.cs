@@ -2,13 +2,13 @@
 
 public record Address
 {
-    public string Country { get; }
+    public string Country { get; } = null!;
 
-    public string Region { get; }
+    public string Region { get; } = null!;
 
-    public string City { get; }
+    public string City { get; } = null!;
 
-    public string Street { get; }
+    public string Street { get; } = null!;
 
-    public string Flat { get; }
+    public string Flat { get; } = null!;
 }

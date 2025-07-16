@@ -1,6 +1,6 @@
 ﻿using CSharpFunctionalExtensions;
 
-namespace PetFamily.Domain.BreedManagement;
+namespace PetFamily.Domain.SpeciesManagement;
 
 public class Species: Entity<Guid>
 {

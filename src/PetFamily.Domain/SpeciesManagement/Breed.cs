@@ -1,12 +1,12 @@
 ﻿using CSharpFunctionalExtensions;
 
-namespace PetFamily.Domain.BreedManagement;
+namespace PetFamily.Domain.SpeciesManagement;
 
 public class Breed: Entity<Guid>
 {
     protected Breed(Guid id): base(id) { }
 
-    private Breed(string name)
+    public Breed(string name)
     {
         Name = name;
     }
