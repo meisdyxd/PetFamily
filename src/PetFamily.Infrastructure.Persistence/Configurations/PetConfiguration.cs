@@ -15,7 +15,7 @@ public class PetConfiguration : IEntityTypeConfiguration<Pet>
         builder.HasKey(p => p.Id).HasName("pk_pet");
 
         builder.Property(p => p.Moniker)
-            .HasMaxLength(Constants.MAX_MONIKER_LENGTH)
+            .HasMaxLength(Constants.Pet.MAX_MONIKER_LENGTH)
             .IsRequired()
             .HasColumnName("moniker");
 
@@ -110,17 +110,17 @@ public class PetConfiguration : IEntityTypeConfiguration<Pet>
 
             rb.Property(p => p.Name)
                 .IsRequired()
-                .HasMaxLength(32)
+                .HasMaxLength(Constants.Requisit.MAX_NAME_LENGTH)
                 .HasColumnName("name");
 
             rb.Property(p => p.Description)
                 .IsRequired()
-                .HasMaxLength(300)
+                .HasMaxLength(Constants.Requisit.MAX_DESCRIPTION_LENGTH)
                 .HasColumnName("description");
 
             rb.Property(p => p.DetailInstruction)
                 .IsRequired(false)
-                .HasMaxLength(600)
+                .HasMaxLength(Constants.Requisit.MAX_DETAIL_INSTRUCTION_LENGTH)
                 .HasColumnName("detailInstruction");
         });
 

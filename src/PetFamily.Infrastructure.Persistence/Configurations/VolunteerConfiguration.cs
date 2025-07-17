@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using PetFamily.Domain.Shared;
 using PetFamily.Domain.VolunteerManager;
 
 namespace PetFamily.Infrastructure.Persistence.Configurations;
@@ -67,12 +68,12 @@ public class VolunteerConfiguration : IEntityTypeConfiguration<Volunteer>
 
             sb.Property(p => p.Name)
                 .IsRequired()
-                .HasMaxLength(64)
+                .HasMaxLength(Constants.SocialNetwork.MAX_NAME_LENGTH)
                 .HasColumnName("name");
 
             sb.Property(p => p.Link)
                 .IsRequired()
-                .HasMaxLength(128)
+                .HasMaxLength(Constants.SocialNetwork.MAX_LINK_LENGTH)
                 .HasColumnName("link");
         });
 
@@ -82,17 +83,17 @@ public class VolunteerConfiguration : IEntityTypeConfiguration<Volunteer>
 
             rb.Property(p => p.Name)
                 .IsRequired()
-                .HasMaxLength(32)
+                .HasMaxLength(Constants.Requisit.MAX_NAME_LENGTH)
                 .HasColumnName("name");
 
             rb.Property(p => p.Description)
                 .IsRequired()
-                .HasMaxLength(300)
+                .HasMaxLength(Constants.Requisit.MAX_DESCRIPTION_LENGTH)
                 .HasColumnName("description");
 
             rb.Property(p => p.DetailInstruction)
                 .IsRequired(false)
-                .HasMaxLength(600)
+                .HasMaxLength(Constants.Requisit.MAX_DETAIL_INSTRUCTION_LENGTH)
                 .HasColumnName("detailInstruction");
         });
     }

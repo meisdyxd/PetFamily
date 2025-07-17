@@ -39,7 +39,8 @@ public record Error
         string message,
         ErrorType errorType)
     {
-        return new(code,
+        return new(
+            code,
             message,
             errorType);
     }

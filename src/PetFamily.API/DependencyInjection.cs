@@ -10,4 +10,19 @@ public static class DependencyInjection
 
         return services;
     }
+
+    public static IServiceCollection AddSwagger(this IServiceCollection services)
+    {
+        services.AddSwaggerGen();
+
+        return services;
+    }
+
+    public static IApplicationBuilder UseConfigureSwagger(this IApplicationBuilder app)
+    {
+        app.UseSwagger();
+        app.UseSwaggerUI();
+
+        return app;
+    }
 }
