@@ -1,18 +1,25 @@
-﻿using System.Text.RegularExpressions;
+﻿using CSharpFunctionalExtensions;
+using System.Text.RegularExpressions;
 
 namespace PetFamily.Domain.Shared.ValueObjects;
 
 public record TelephoneNumber 
 {
-    private Regex TelephoneRegex = new Regex("^\\+?[7-8][0-9]{10}$");
-
     private TelephoneNumber() { }
 
-    public TelephoneNumber(string number)
+    private TelephoneNumber(string number)
     {
-        if (!TelephoneRegex.IsMatch(number))
-            throw new ArgumentException("Невалидный номер телефона");
         Value = number;
     }
+
     public string Value { get; } = null!;
+
+    public static Result<TelephoneNumber, Error> Create(string number)
+    {
+        var telephoneRegex = new Regex(Constants.TelephoneNumber.REGEX);
+        if (!telephoneRegex.IsMatch(number))
+            return Errors.General.ValueIsInvalid(nameof(number));
+
+        return new TelephoneNumber(number);
+    }
 }

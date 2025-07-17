@@ -19,13 +19,17 @@ public class Volunteer: Entity<Guid>
         Email email,
         Description description,
         EmployeeExperience employeeExperience,
-        TelephoneNumber telephoneNumber)
+        TelephoneNumber telephoneNumber,
+        IEnumerable<SocialNetwork>? socialNetworks,
+        IEnumerable<Requisit>? requisits)
     {
         FullName = fullName;
         Email = email;
         Description = description;
         EmployeeExperience = employeeExperience;
         TelephoneNumber = telephoneNumber;
+        _socialNetworks = socialNetworks!.ToList();
+        _requisits = requisits!.ToList();
     }
 
     public FullName FullName { get; private set; }
@@ -37,19 +41,23 @@ public class Volunteer: Entity<Guid>
     public IReadOnlyList<Requisit> Requisits => _requisits;
     public IReadOnlyList<Pet> Pets => _pets;
 
-    public Volunteer Create(
+    public static Result<Volunteer, ErrorEventArgs> Create(
         FullName fullName,
         Email email,
         Description description,
         EmployeeExperience employeeExperience,
-        TelephoneNumber telephoneNumber)
+        TelephoneNumber telephoneNumber,
+        IEnumerable<SocialNetwork>? socialNetworks,
+        IEnumerable<Requisit>? requisits)
     {
-        return new(
+        return new Volunteer(
             fullName, 
             email, 
             description, 
             employeeExperience, 
-            telephoneNumber);
+            telephoneNumber,
+            socialNetworks ?? [],
+            requisits ?? []);
     }
 
     public int CountPetsHomeless() =>

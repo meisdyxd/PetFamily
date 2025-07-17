@@ -1,16 +1,22 @@
-﻿using System.Net.Mail;
+﻿using CSharpFunctionalExtensions;
+using PetFamily.Domain.Shared;
+using System.Net.Mail;
 
 namespace PetFamily.Domain.VolunteerManagement.ValueObjects;
 
 public record Email
 {
-    public Email(string value)
+    private Email(string value)
     {
-        if(!MailAddress.TryCreate(value, out var _))
-        {
-            throw new ArgumentException("Невалидная почта");
-        }
         Value = value;
     }
     public string Value { get; }
+
+    public static Result<Email, Error> Create(string email)
+    {
+        if (!MailAddress.TryCreate(email, out var _))
+            return Errors.General.ValueIsInvalid(nameof(email));
+
+        return new Email(email);
+    }
 }

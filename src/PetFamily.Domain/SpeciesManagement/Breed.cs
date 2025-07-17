@@ -13,7 +13,7 @@ public class Breed: Entity<Guid>
 
     public string Name { get; private set; }
 
-    public Breed Create(string name)
+    public static Breed Create(string name)
     {
         return new(name);
     }

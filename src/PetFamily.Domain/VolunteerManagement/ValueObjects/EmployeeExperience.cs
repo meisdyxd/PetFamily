@@ -1,12 +1,22 @@
-﻿namespace PetFamily.Domain.VolunteerManagement.ValueObjects;
+﻿using CSharpFunctionalExtensions;
+using PetFamily.Domain.Shared;
+
+namespace PetFamily.Domain.VolunteerManagement.ValueObjects;
 
 public record EmployeeExperience
 {
-    public EmployeeExperience(int year)
+    private EmployeeExperience(int year)
     {
-        if (year < 0)
-            throw new ArgumentException(nameof(Year), "Опыт сотрудника не может быть отрицательным.");
         Year = year;
     }
+
     public int Year {  get; }
+
+    public static Result<EmployeeExperience, Error> Create(int year)
+    {
+        if (year < 0)
+            return Errors.General.ValueIsInvalid(nameof(year));
+
+        return new EmployeeExperience(year);
+    }
 }
