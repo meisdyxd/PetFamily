@@ -6,6 +6,9 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PetFamily.API", "PetFamily.API\PetFamily.API.csproj", "{C079B705-A3F2-4572-8E8B-D2E1CE9E9090}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{79D6B615-60A2-47E1-9435-9113C66637D7}"
+	ProjectSection(SolutionItems) = preProject
+		docker-compose.yml = docker-compose.yml
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PetFamily.Domain", "PetFamily.Domain\PetFamily.Domain.csproj", "{02354988-58ED-4EE4-B1B5-534D3B05FDCC}"
 EndProject
@@ -44,5 +47,8 @@ Global
 		{02354988-58ED-4EE4-B1B5-534D3B05FDCC} = {79D6B615-60A2-47E1-9435-9113C66637D7}
 		{0402E9B1-CEA7-41C9-A51B-089650BE4AB9} = {79D6B615-60A2-47E1-9435-9113C66637D7}
 		{C73D9030-82A2-4BA3-B548-4FF2249B30CD} = {79D6B615-60A2-47E1-9435-9113C66637D7}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {F81A7E96-951D-426E-A7D7-58E656CD31DA}
 	EndGlobalSection
 EndGlobal
