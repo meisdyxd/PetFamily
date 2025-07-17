@@ -1,4 +1,5 @@
 ﻿using CSharpFunctionalExtensions;
+using PetFamily.Domain.Shared;
 using PetFamily.Domain.Shared.ValueObjects;
 using PetFamily.Domain.VolunteerManagement.Enums;
 using PetFamily.Domain.VolunteerManagement.ValueObjects;
@@ -60,7 +61,7 @@ public class Pet : Entity<Guid>
     public IReadOnlyList<Requisit> Requisits => _requisits;
     public DateTime CreatedAt { get; private set; }
 
-    public Pet Create(
+    public Result<Pet, Error> Create(
         string moniker, 
         Species species, 
         Description description, 
@@ -75,7 +76,13 @@ public class Pet : Entity<Guid>
         DateTime birthDate,
         bool isVaccinated)
     {
-        return new(
+        if (weight <= 0)
+            return Errors.General.ValueIsInvalid(nameof(weight));
+
+        if (height <= 0)
+            return Errors.General.ValueIsInvalid(nameof(height));
+
+        return new Pet(
             moniker,
             species,
             description,
