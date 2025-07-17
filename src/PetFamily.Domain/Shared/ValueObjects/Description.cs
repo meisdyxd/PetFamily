@@ -19,7 +19,7 @@ public record Description
         if (description == null)
             return new Description(description);
 
-        if (string.IsNullOrWhiteSpace(Value) ||
+        if (string.IsNullOrWhiteSpace(description) ||
             description.Length > Constants.Description.MAX_DESCRIPTION_LENGTH)
             return Errors.General.ValueIsInvalid(nameof(Description));
 
