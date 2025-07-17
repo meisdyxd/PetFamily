@@ -22,7 +22,7 @@ public record Requisit
     public string Description { get; }
     public string? DetailInstruction { get; }
 
-    public Result<Requisit, Error> Create(
+    public static Result<Requisit, Error> Create(
         string name,
         string description,
         string? detailInstruction)

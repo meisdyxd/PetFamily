@@ -16,7 +16,7 @@ public class Species: Entity<Guid>
     public string Name { get; private set; }
     public IReadOnlyList<Breed> Breeds => _breeds;
 
-    public Species Create(string name)
+    public static Species Create(string name)
     {
         return new(name);
     }

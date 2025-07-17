@@ -1,10 +1,17 @@
-﻿namespace PetFamily.Domain.Shared;
+﻿using System.Text.RegularExpressions;
+
+namespace PetFamily.Domain.Shared;
 
 public static class Constants
 {
     public static class Pet
     {
         public const int MAX_MONIKER_LENGTH = 100;
+    }
+
+    public static class TelephoneNumber 
+    {
+        public const string REGEX = "^\\+?[7-8][0-9]{10}$";
     }
     
     public static class Description

@@ -12,7 +12,7 @@ public record Email
     }
     public string Value { get; }
 
-    public Result<Email, Error> Create(string email)
+    public static Result<Email, Error> Create(string email)
     {
         if (!MailAddress.TryCreate(email, out var _))
             return Errors.General.ValueIsInvalid(nameof(email));

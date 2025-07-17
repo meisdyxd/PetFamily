@@ -5,8 +5,6 @@ namespace PetFamily.Domain.Shared.ValueObjects;
 
 public record TelephoneNumber 
 {
-    private Regex TelephoneRegex = new Regex("^\\+?[7-8][0-9]{10}$");
-
     private TelephoneNumber() { }
 
     private TelephoneNumber(string number)
@@ -16,9 +14,10 @@ public record TelephoneNumber
 
     public string Value { get; } = null!;
 
-    public Result<TelephoneNumber, Error> Create(string number)
+    public static Result<TelephoneNumber, Error> Create(string number)
     {
-        if (!TelephoneRegex.IsMatch(number))
+        var telephoneRegex = new Regex(Constants.TelephoneNumber.REGEX);
+        if (!telephoneRegex.IsMatch(number))
             return Errors.General.ValueIsInvalid(nameof(number));
 
         return new TelephoneNumber(number);

@@ -35,7 +35,7 @@ public record Address
 
     public string Flat { get; }
 
-    public Result<Address, Error> Create(
+    public static Result<Address, Error> Create(
         string country, 
         string region, 
         string city, 

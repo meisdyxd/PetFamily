@@ -12,7 +12,7 @@ public record EmployeeExperience
 
     public int Year {  get; }
 
-    public Result<EmployeeExperience, Error> Create(int year)
+    public static Result<EmployeeExperience, Error> Create(int year)
     {
         if (year < 0)
             return Errors.General.ValueIsInvalid(nameof(year));

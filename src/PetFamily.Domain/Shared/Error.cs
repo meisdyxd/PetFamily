@@ -34,7 +34,7 @@ public record Error
     public static Error Forbidden(string code, string message) =>
         new(code, message, ErrorType.Forbidden);
 
-    public Error Create(
+    public static Error Create(
         string code, 
         string message,
         ErrorType errorType)

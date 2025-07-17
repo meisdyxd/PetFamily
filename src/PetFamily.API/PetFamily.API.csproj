@@ -8,11 +8,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Controllers\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\PetFamily.Application\PetFamily.Application.csproj" />
+    <ProjectReference Include="..\PetFamily.Contracts\PetFamily.Contracts.csproj" />
     <ProjectReference Include="..\PetFamily.Infrastructure.Persistence\PetFamily.Infrastructure.Persistence.csproj" />
 	<DotNetCliToolReference Include="Microsoft.Extensions.SecretManager.Tools" Version="2.0.0" />
   </ItemGroup>
