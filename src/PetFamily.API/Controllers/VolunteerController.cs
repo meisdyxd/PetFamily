@@ -14,11 +14,10 @@ public class VolunteerController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> Create(
         [FromServices] CreateVolunteerHandler handler,
-        [FromBody] CreateVolunteerRequest request)
+        [FromBody] CreateVolunteerRequest request,
+        CancellationToken cancellationToken)
     {
-        var tokenSource = new CancellationTokenSource();
-
-        var volunteer = await handler.Handle(request, tokenSource.Token);
+        var volunteer = await handler.Handle(request, cancellationToken);
 
         if (volunteer.IsFailure)
             return BadRequest(volunteer.Error);
