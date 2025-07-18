@@ -1,7 +1,9 @@
-﻿using PetFamily.Application.VolunteerModule;
+﻿using FluentValidation;
+using PetFamily.Application.VolunteerModule;
 using PetFamily.Application.VolunteerModule.UseCases;
 using PetFamily.Infrastructure.Persistence;
 using PetFamily.Infrastructure.Persistence.VolunteerModule;
+using SharpGrip.FluentValidation.AutoValidation.Mvc.Extensions;
 
 namespace PetFamily.API;
 
@@ -31,6 +33,14 @@ public static class DependencyInjection
     public static IServiceCollection AddSwagger(this IServiceCollection services)
     {
         services.AddSwaggerGen();
+
+        return services;
+    }
+
+    public static IServiceCollection ConfigureServices(this IServiceCollection services)
+    {
+        services.AddValidatorsFromAssembly(typeof(DependencyInjection).Assembly);
+        services.AddFluentValidationAutoValidation();
 
         return services;
     }
