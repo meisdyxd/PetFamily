@@ -14,7 +14,7 @@ public record Description
 
     public string? Value { get; }
 
-    public static Result<Description, Error> Create(string? description)
+    public static Result<Description, ErrorResult> Create(string? description)
     {
         if (description == null)
             return new Description(description);

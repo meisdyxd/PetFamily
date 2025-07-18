@@ -17,7 +17,7 @@ public record SocialNetwork
     public string Name { get; }
     public string Link { get; }
 
-    public static Result<SocialNetwork, Error> Create(string name, string link)
+    public static Result<SocialNetwork, ErrorResult> Create(string name, string link)
     {
         if (string.IsNullOrWhiteSpace(name) ||
             name.Length > Constants.SocialNetwork.MAX_NAME_LENGTH)

@@ -8,11 +8,11 @@ public static class CustomValidators
 {
     public static IRuleBuilderOptionsConditions<T, TElement> MustBeValueObject<T, TElement, TValueOobject>(
         this IRuleBuilder<T, TElement> ruleBuilder,
-        Func<TElement, Result<TValueOobject, Error>> method)
+        Func<TElement, Result<TValueOobject, ErrorResult>> method)
     {
         return ruleBuilder.Custom((value, context) =>
         {
-            Result<TValueOobject, Error> result = method(value);
+            Result<TValueOobject, ErrorResult> result = method(value);
 
             if (result.IsSuccess)
                 return;

@@ -20,7 +20,7 @@ public class CreateVolunteerHandler
         _repository = repository;
     }
 
-    public async Task<Result<CreateVolunteerResponse, Error>> Handle(
+    public async Task<Result<CreateVolunteerResponse, ErrorResult>> Handle(
         CreateVolunteerCommand command,
         CancellationToken cancellationToken)
     {

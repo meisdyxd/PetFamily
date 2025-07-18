@@ -42,7 +42,7 @@ public class Volunteer: Entity<Guid>
     public IReadOnlyList<Requisit> Requisits => _requisits;
     public IReadOnlyList<Pet> Pets => _pets;
 
-    public static Result<Volunteer, Error> Create(
+    public static Result<Volunteer, ErrorResult> Create(
         FullName fullName,
         Email email,
         Description description,

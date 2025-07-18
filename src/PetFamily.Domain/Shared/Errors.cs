@@ -4,37 +4,37 @@ public static class Errors
 {
     public static class General
     {
-        public static Error ValueIsInvalid(string? name)
+        public static ErrorResult ValueIsInvalid(string? name)
         {
             var label = name ?? "value";
             var error = new List<ErrorResponse>
             {
-                new ErrorResponse("value.is.invalid", $"{label} is invalid")
+                ErrorResponse.Validation("value.is.invalid", $"{label} is invalid")
             };
 
-            return Error.Validation(error);
+            return ErrorResult.Create(error);
         }
 
-        public static Error RecordNotFound(Guid? id)
+        public static ErrorResult RecordNotFound(Guid? id)
         {
             var label = id is null ? "" : $" for id: '{id}'";
             var error = new List<ErrorResponse>
             {
-                new ErrorResponse("record.not.found", $"record not found{label}")
+                ErrorResponse.Validation("record.not.found", $"record not found{label}")
             };
 
-            return Error.NotFound(error);
+            return ErrorResult.Create(error);
         }
 
-        public static Error ValueIsRequired(string? name)
+        public static ErrorResult ValueIsRequired(string? name)
         {
             var label = name ?? "value";
             var error = new List<ErrorResponse>
             {
-                new ErrorResponse("value.is.requred", $"{label} is required")
+                ErrorResponse.Validation("value.is.requred", $"{label} is required")
             };
 
-            return Error.Validation(error);
+            return ErrorResult.Create(error);
         }
     }
 }

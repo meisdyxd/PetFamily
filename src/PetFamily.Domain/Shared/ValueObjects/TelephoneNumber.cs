@@ -14,7 +14,7 @@ public record TelephoneNumber
 
     public string Value { get; } = null!;
 
-    public static Result<TelephoneNumber, Error> Create(string number)
+    public static Result<TelephoneNumber, ErrorResult> Create(string number)
     {
         var telephoneRegex = new Regex(Constants.TelephoneNumber.REGEX);
         if (!telephoneRegex.IsMatch(number))

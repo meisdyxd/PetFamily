@@ -5,15 +5,15 @@ namespace PetFamily.Application.VolunteerModule.Extensions;
 
 public static class ValidationResultExtensions
 {
-    public static Error ToError(this ValidationResult result)
+    public static ErrorResult ToError(this ValidationResult result)
     {
         var errors = new List<ErrorResponse>();
 
         foreach (var error in result.Errors)
         {
-            errors.Add(new ErrorResponse(error.PropertyName, error.ErrorMessage));
+            errors.Add(ErrorResponse.Validation(error.PropertyName, error.ErrorMessage));
         }
 
-        return Error.Validation(errors);
+        return ErrorResult.Create(errors);
     }
 }
