@@ -1,4 +1,7 @@
 ﻿using CSharpFunctionalExtensions;
+using FluentValidation;
+using PetFamily.Application.VolunteerModule.Extensions;
+using PetFamily.Application.VolunteerModule.ValidationRules;
 using PetFamily.Contracts.VolunteerContracts.Response;
 using PetFamily.Domain.Shared;
 using PetFamily.Domain.Shared.ValueObjects;
@@ -11,7 +14,8 @@ public class CreateVolunteerHandler
 {
     private IVolunteerRepository _repository;
 
-    public CreateVolunteerHandler(IVolunteerRepository repository)
+    public CreateVolunteerHandler(
+        IVolunteerRepository repository)
     {
         _repository = repository;
     }
@@ -20,6 +24,12 @@ public class CreateVolunteerHandler
         CreateVolunteerCommand command,
         CancellationToken cancellationToken)
     {
+        var validator = new CreateVolunteerCommandValidator();
+        var validation = validator.Validate(command);
+
+        if (!validation.IsValid)
+            return validation.ToError();
+
         var fullName = FullName.Create(command.Surname, command.Name, command.Patronymic).Value;
 
         var email = Email.Create(command.Email).Value;
@@ -48,6 +58,9 @@ public class CreateVolunteerHandler
             telephoneNumber,
             validatedSocialNetworks,
             validatedRequisits);
+
+        if (volunteer.IsFailure)
+            return volunteer.Error;
 
         var volunteerId = await _repository.Create(volunteer.Value, cancellationToken);
 

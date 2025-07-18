@@ -17,7 +17,10 @@ public static class CustomValidators
             if (result.IsSuccess)
                 return;
 
-            context.AddFailure(result.Error.Message);
+            foreach(var error in result.Error.Errors)
+            {
+                context.AddFailure(error.Code, error.Message);
+            }
         });
     }
 }

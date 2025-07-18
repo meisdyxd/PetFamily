@@ -2,46 +2,41 @@
 
 public record Error
 {
-    public string Code { get; }
-    public string Message { get; }
+    public List<ErrorResponse> Errors { get; } 
     public ErrorType ErrorType { get; }
 
     private Error(
-        string code, 
-        string message, 
+        List<ErrorResponse> errors,
         ErrorType errorType)
     {
-        Code = code;
-        Message = message;
+        Errors = errors;
         ErrorType = errorType;
     }
 
-    public static Error Validation(string code, string message) =>
-        new(code, message, ErrorType.Validation);
+    public static Error Validation(List<ErrorResponse> errors) =>
+        new(errors, ErrorType.Validation);
 
-    public static Error BadRequest(string code, string message) =>
-        new(code, message, ErrorType.BadRequest);
+    public static Error BadRequest(List<ErrorResponse> errors) =>
+        new(errors, ErrorType.BadRequest);
 
-    public static Error Unauthorized(string code, string message) =>
-        new(code, message, ErrorType.Unauthorized);
+    public static Error Unauthorized(List<ErrorResponse> errors) =>
+        new(errors, ErrorType.Unauthorized);
 
-    public static Error Conflict(string code, string message) =>
-        new(code, message, ErrorType.Conflict);
+    public static Error Conflict(List<ErrorResponse> errors) =>
+        new(errors, ErrorType.Conflict);
 
-    public static Error NotFound(string code, string message) =>
-        new(code, message, ErrorType.NotFound);
+    public static Error NotFound(List<ErrorResponse> errors) =>
+        new(errors, ErrorType.NotFound);
 
-    public static Error Forbidden(string code, string message) =>
-        new(code, message, ErrorType.Forbidden);
+    public static Error Forbidden(List<ErrorResponse> errors) =>
+        new(errors, ErrorType.Forbidden);
 
     public static Error Create(
-        string code, 
-        string message,
+        List<ErrorResponse> errors,
         ErrorType errorType)
     {
         return new(
-            code,
-            message,
+            errors,
             errorType);
     }
 }
