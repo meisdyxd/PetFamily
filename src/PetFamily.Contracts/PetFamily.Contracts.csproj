@@ -6,8 +6,4 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
-  <ItemGroup>
-    <Folder Include="VolunteerContracts\Response\" />
-  </ItemGroup>
-
 </Project>
