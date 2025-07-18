@@ -4,7 +4,7 @@ using PetFamily.Domain.Shared.ValueObjects;
 using PetFamily.Domain.VolunteerManagement.Enums;
 using PetFamily.Domain.VolunteerManagement.ValueObjects;
 
-namespace PetFamily.Domain.VolunteerManager;
+namespace PetFamily.Domain.VolunteerManagement;
 
 public class Pet : Entity<Guid>
 {

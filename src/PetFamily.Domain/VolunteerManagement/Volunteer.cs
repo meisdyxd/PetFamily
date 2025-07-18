@@ -1,9 +1,10 @@
 ﻿using CSharpFunctionalExtensions;
+using PetFamily.Domain.Shared;
 using PetFamily.Domain.Shared.ValueObjects;
 using PetFamily.Domain.VolunteerManagement.ValueObjects;
 using PetStatus = PetFamily.Domain.VolunteerManagement.Enums.PetStatus;
 
-namespace PetFamily.Domain.VolunteerManager;
+namespace PetFamily.Domain.VolunteerManagement;
 
 public class Volunteer: Entity<Guid>
 {
@@ -41,7 +42,7 @@ public class Volunteer: Entity<Guid>
     public IReadOnlyList<Requisit> Requisits => _requisits;
     public IReadOnlyList<Pet> Pets => _pets;
 
-    public static Result<Volunteer, ErrorEventArgs> Create(
+    public static Result<Volunteer, Error> Create(
         FullName fullName,
         Email email,
         Description description,

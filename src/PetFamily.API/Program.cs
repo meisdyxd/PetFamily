@@ -8,6 +8,8 @@ var configurations = builder.Configuration;
 services
     .AddLayers(configurations)
     .AddSwagger()
+    .AddHandlers()
+    .AddRepositories()
     .AddControllers();
 
 
