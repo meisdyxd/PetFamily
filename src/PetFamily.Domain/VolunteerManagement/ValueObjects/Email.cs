@@ -1,5 +1,5 @@
 ﻿using CSharpFunctionalExtensions;
-using PetFamily.Domain.Shared;
+using PetFamily.Domain.Shared.Error;
 using System.Net.Mail;
 
 namespace PetFamily.Domain.VolunteerManagement.ValueObjects;
