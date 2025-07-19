@@ -18,4 +18,10 @@ public record ErrorResponse
 
     public static ErrorResponse Validation(string code, string message)
         => new ErrorResponse(code, message, ErrorTypes.Validation.ToString());
+
+    public static ErrorResponse NotFound(string code, string message)
+        => new ErrorResponse(code, message, ErrorTypes.NotFound.ToString());
+
+    public static ErrorResponse Internal(string code, string message)
+        => new ErrorResponse(code, message, ErrorTypes.InternalServerError.ToString());
 }

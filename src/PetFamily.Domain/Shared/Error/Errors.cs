@@ -20,7 +20,7 @@ public static class Errors
             var label = id is null ? "" : $" for id: '{id}'";
             var error = new List<ErrorResponse>
             {
-                ErrorResponse.Validation("record.not.found", $"record not found{label}")
+                ErrorResponse.NotFound("record.not.found", $"record not found{label}")
             };
 
             return ErrorResult.Create(error);
@@ -32,6 +32,16 @@ public static class Errors
             var error = new List<ErrorResponse>
             {
                 ErrorResponse.Validation("value.is.requred", $"{label} is required")
+            };
+
+            return ErrorResult.Create(error);
+        }
+
+        public static ErrorResult InternalServerError(string? place)
+        {
+            var error = new List<ErrorResponse>
+            {
+                ErrorResponse.Internal("internal.server.error", $"{place}")
             };
 
             return ErrorResult.Create(error);

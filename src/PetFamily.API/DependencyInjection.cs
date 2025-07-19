@@ -1,4 +1,5 @@
-﻿using PetFamily.Application;
+﻿using Microsoft.EntityFrameworkCore;
+using PetFamily.Application;
 using PetFamily.Application.VolunteerModule;
 using PetFamily.Application.VolunteerModule.UseCases;
 using PetFamily.Infrastructure.Persistence;
@@ -37,11 +38,25 @@ public static class DependencyInjection
         return services;
     }
 
-    public static IApplicationBuilder UseConfigureSwagger(this IApplicationBuilder app)
+    public static WebApplication UseConfigureSwagger(this WebApplication app)
     {
-        app.UseSwagger();
-        app.UseSwaggerUI();
+        if (app.Environment.IsDevelopment())
+        {
+            app.UseSwagger();
+            app.UseSwaggerUI();
+        }
 
         return app;
+    }
+
+    public async static Task ApplyMigrations(this WebApplication app)
+    {
+        if (app.Environment.IsDevelopment())
+        {
+            await using var scope = app.Services.CreateAsyncScope();
+            var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+
+            await dbContext.Database.MigrateAsync();
+        }
     }
 }

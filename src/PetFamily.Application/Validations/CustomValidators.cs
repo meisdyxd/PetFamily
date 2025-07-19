@@ -23,4 +23,13 @@ public static class CustomValidators
             }
         });
     }
+
+    public static IRuleBuilderOptions<T, TElement> WithError<T, TElement>(
+        this IRuleBuilderOptions<T, TElement> rule,
+        string? propertyName)
+    {
+        var error = Errors.General.ValueIsInvalid(propertyName).Errors.First();
+
+        return rule.WithMessage(error.Message).OverridePropertyName(error.Code);
+    }
 }
