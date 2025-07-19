@@ -1,5 +1,7 @@
 ﻿using CSharpFunctionalExtensions;
-using PetFamily.Contracts.VolunteerContracts.Request;
+using FluentValidation;
+using PetFamily.Application.VolunteerModule.Extensions;
+using PetFamily.Application.VolunteerModule.ValidationRules;
 using PetFamily.Contracts.VolunteerContracts.Response;
 using PetFamily.Domain.Shared;
 using PetFamily.Domain.Shared.ValueObjects;
@@ -12,64 +14,48 @@ public class CreateVolunteerHandler
 {
     private IVolunteerRepository _repository;
 
-    public CreateVolunteerHandler(IVolunteerRepository repository)
+    public CreateVolunteerHandler(
+        IVolunteerRepository repository)
     {
         _repository = repository;
     }
 
-    public async Task<Result<CreateVolunteerResponse, Error>> Handle(
-        CreateVolunteerRequest request,
+    public async Task<Result<CreateVolunteerResponse, ErrorResult>> Handle(
+        CreateVolunteerCommand command,
         CancellationToken cancellationToken)
     {
-        var fullName = FullName.Create(request.Surname, request.Name, request.Patronymic);
+        var validator = new CreateVolunteerCommandValidator();
+        var validation = validator.Validate(command);
 
-        if (fullName.IsFailure)
-            return fullName.Error;
+        if (!validation.IsValid)
+            return validation.ToError();
 
-        var email = Email.Create(request.Email);
+        var fullName = FullName.Create(command.Surname, command.Name, command.Patronymic).Value;
 
-        if (email.IsFailure)
-            return email.Error;
+        var email = Email.Create(command.Email).Value;
 
-        var description = Description.Create(request.Description);
+        var description = Description.Create(command.Description).Value;
 
-        if (description.IsFailure)
-            return description.Error;
+        var employeeExperience = EmployeeExperience.Create(command.EmployeeExperience).Value;
 
-        var employeeExperience = EmployeeExperience.Create(request.EmployeeExperience);
+        var telephoneNumber = TelephoneNumber.Create(command.TelephoneNumber).Value;
 
-        if (employeeExperience.IsFailure)
-            return employeeExperience.Error;
-
-        var telephoneNumber = TelephoneNumber.Create(request.TelephoneNumber);
-
-        if (telephoneNumber.IsFailure)
-            return telephoneNumber.Error;
-
-        var socialNetworks = request.SocialNetworks?
+        var socialNetworks = command.SocialNetworks?
             .Select(sn => SocialNetwork.Create(sn.Name, sn.Link));
-
-        if (socialNetworks is not null &&
-            socialNetworks.Any(sn => sn.IsFailure))
-            return socialNetworks.First().Error;
 
         var validatedSocialNetworks = socialNetworks?.Select(sn => sn.Value);
 
-        var requisits = request.Requisits?
+        var requisits = command.Requisits?
             .Select(r => Requisit.Create(r.Name, r.Description, r.DetailInstruction));
-
-        if (requisits is not null &&
-            requisits.Any(r => r.IsFailure))
-            return requisits.First().Error;
 
         var validatedRequisits = requisits?.Select(sn => sn.Value);
 
         var volunteer = Volunteer.Create(
-            fullName.Value,
-            email.Value,
-            description.Value,
-            employeeExperience.Value,
-            telephoneNumber.Value,
+            fullName,
+            email,
+            description,
+            employeeExperience,
+            telephoneNumber,
             validatedSocialNetworks,
             validatedRequisits);
 

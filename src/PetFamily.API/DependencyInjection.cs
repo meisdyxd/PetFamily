@@ -1,4 +1,5 @@
-﻿using PetFamily.Application.VolunteerModule;
+﻿using PetFamily.Application;
+using PetFamily.Application.VolunteerModule;
 using PetFamily.Application.VolunteerModule.UseCases;
 using PetFamily.Infrastructure.Persistence;
 using PetFamily.Infrastructure.Persistence.VolunteerModule;
@@ -10,6 +11,7 @@ public static class DependencyInjection
     public static IServiceCollection AddLayers(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddPersistence(configuration);
+        services.AddApplication();
 
         return services;
     }

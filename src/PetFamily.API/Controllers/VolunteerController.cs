@@ -1,9 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using PetFamily.Application.VolunteerModule.UseCases;
+using PetFamily.Contracts.VolunteerContracts.Extensions;
 using PetFamily.Contracts.VolunteerContracts.Request;
-using PetFamily.Domain.Shared.ValueObjects;
-using PetFamily.Domain.VolunteerManagement;
-using PetFamily.Domain.VolunteerManagement.ValueObjects;
 
 namespace PetFamily.API.Controllers;
 
@@ -17,7 +15,8 @@ public class VolunteerController : ControllerBase
         [FromBody] CreateVolunteerRequest request,
         CancellationToken cancellationToken)
     {
-        var volunteer = await handler.Handle(request, cancellationToken);
+        var command = request.ToCommand();
+        var volunteer = await handler.Handle(command, cancellationToken);
 
         if (volunteer.IsFailure)
             return BadRequest(volunteer.Error);

@@ -61,7 +61,7 @@ public class Pet : Entity<Guid>
     public IReadOnlyList<Requisit> Requisits => _requisits;
     public DateTime CreatedAt { get; private set; }
 
-    public static Result<Pet, Error> Create(
+    public static Result<Pet, ErrorResult> Create(
         string moniker, 
         Species species, 
         Description description, 
