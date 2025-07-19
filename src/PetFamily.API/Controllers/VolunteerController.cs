@@ -1,13 +1,13 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using PetFamily.API.Extensions;
 using PetFamily.Application.VolunteerModule.UseCases;
 using PetFamily.Contracts.VolunteerContracts.Extensions;
 using PetFamily.Contracts.VolunteerContracts.Request;
 
 namespace PetFamily.API.Controllers;
 
-[Route("api/[controller]")]
-[ApiController]
-public class VolunteerController : ControllerBase
+
+public class VolunteerController : MainController
 {
     [HttpPost]
     public async Task<IActionResult> Create(
@@ -19,8 +19,8 @@ public class VolunteerController : ControllerBase
         var volunteer = await handler.Handle(command, cancellationToken);
 
         if (volunteer.IsFailure)
-            return BadRequest(volunteer.Error);
+            return volunteer.Error.ToResponse();
 
-        return Ok(volunteer.Value);
+        return Created(volunteer.Value);
     }
 }

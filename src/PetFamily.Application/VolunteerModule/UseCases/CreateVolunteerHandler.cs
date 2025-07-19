@@ -1,9 +1,8 @@
 ﻿using CSharpFunctionalExtensions;
-using FluentValidation;
 using PetFamily.Application.VolunteerModule.Extensions;
 using PetFamily.Application.VolunteerModule.ValidationRules;
 using PetFamily.Contracts.VolunteerContracts.Response;
-using PetFamily.Domain.Shared;
+using PetFamily.Domain.Shared.Error;
 using PetFamily.Domain.Shared.ValueObjects;
 using PetFamily.Domain.VolunteerManagement;
 using PetFamily.Domain.VolunteerManagement.ValueObjects;

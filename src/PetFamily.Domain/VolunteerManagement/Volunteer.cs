@@ -1,5 +1,5 @@
 ﻿using CSharpFunctionalExtensions;
-using PetFamily.Domain.Shared;
+using PetFamily.Domain.Shared.Error;
 using PetFamily.Domain.Shared.ValueObjects;
 using PetFamily.Domain.VolunteerManagement.ValueObjects;
 using PetStatus = PetFamily.Domain.VolunteerManagement.Enums.PetStatus;
