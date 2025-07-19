@@ -1,4 +1,5 @@
 ﻿using CSharpFunctionalExtensions;
+using Microsoft.Extensions.Logging;
 using PetFamily.Application.VolunteerModule.Extensions;
 using PetFamily.Application.VolunteerModule.ValidationRules;
 using PetFamily.Contracts.VolunteerContracts.Response;
@@ -11,12 +12,15 @@ namespace PetFamily.Application.VolunteerModule.UseCases;
 
 public class CreateVolunteerHandler
 {
-    private IVolunteerRepository _repository;
+    private readonly IVolunteerRepository _repository;
+    private readonly ILogger<CreateVolunteerHandler> _logger;
 
     public CreateVolunteerHandler(
-        IVolunteerRepository repository)
+        IVolunteerRepository repository,
+        ILogger<CreateVolunteerHandler> logger)
     {
         _repository = repository;
+        _logger = logger;
     }
 
     public async Task<Result<CreateVolunteerResponse, ErrorResult>> Handle(
@@ -62,6 +66,8 @@ public class CreateVolunteerHandler
             return volunteer.Error;
 
         var volunteerId = await _repository.Create(volunteer.Value, cancellationToken);
+
+        _logger.LogInformation("Создан волонтер с ID: '{id}'", volunteerId);
 
         return new CreateVolunteerResponse(volunteerId);
     }

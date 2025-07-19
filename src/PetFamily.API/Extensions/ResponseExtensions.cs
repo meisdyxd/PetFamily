@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using PetFamily.Domain.Shared;
 using PetFamily.Domain.Shared.Error;
+using PetFamily.Domain.Shared.Extensions;
 
 namespace PetFamily.API.Extensions;
 
@@ -8,7 +9,7 @@ public static class ResponseExtensions
 {
     public static ActionResult ToResponse(this ErrorResult errorResult)
     {
-        var errorType = errorResult.Errors.First().ErrorType;
+        var errorType = errorResult.GetError().ErrorType;
         var statusCode = Enum.Parse<ErrorTypes>(errorType) switch
         {
             ErrorTypes.Validation => StatusCodes.Status400BadRequest,
