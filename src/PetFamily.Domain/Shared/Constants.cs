@@ -11,7 +11,7 @@ public static class Constants
 
     public static class TelephoneNumber 
     {
-        public const string REGEX = "^\\+?[7-8][0-9]{10}$";
+        public const string REGEX = "^[7-8][0-9]{10}$";
     }
     
     public static class Description

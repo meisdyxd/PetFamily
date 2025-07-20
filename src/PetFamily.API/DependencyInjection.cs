@@ -1,9 +1,14 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using PetFamily.API.Middlewares;
 using PetFamily.Application;
 using PetFamily.Application.VolunteerModule;
-using PetFamily.Application.VolunteerModule.UseCases;
+using PetFamily.Application.VolunteerModule.UseCases.CreateVolunteer;
+using PetFamily.Application.VolunteerModule.UseCases.UpdateMainInfoVolunteer;
+using PetFamily.Application.VolunteerModule.UseCases.UpdateRequisitsVolunteer;
+using PetFamily.Application.VolunteerModule.UseCases.UpdateSocialNetworksVolunteer;
 using PetFamily.Infrastructure.Persistence;
 using PetFamily.Infrastructure.Persistence.VolunteerModule;
+using Serilog;
 
 namespace PetFamily.API;
 
@@ -20,6 +25,9 @@ public static class DependencyInjection
     public static IServiceCollection AddHandlers(this IServiceCollection services)
     {
         services.AddScoped<CreateVolunteerHandler>();
+        services.AddScoped<UpdateMainInfoHandler>();
+        services.AddScoped<UpdateRequisitsHandler>();
+        services.AddScoped<UpdateSocialNetworksHandler>();
 
         return services;
     }
@@ -58,5 +66,20 @@ public static class DependencyInjection
 
             await dbContext.Database.MigrateAsync();
         }
+    }
+
+    public static WebApplication ConfigureMiddlewares(this WebApplication app)
+    {
+        app.UseMiddleware<ExceptionMiddleware>();
+
+        app.UseConfigureSwagger();
+
+        app.UseHttpsRedirection();
+
+        app.UseSerilogRequestLogging();
+
+        app.UseAuthorization();
+
+        return app;
     }
 }

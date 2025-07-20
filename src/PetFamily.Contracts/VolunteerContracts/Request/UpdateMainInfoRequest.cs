@@ -2,11 +2,9 @@
 
 namespace PetFamily.Contracts.VolunteerContracts.Request;
 
-public record CreateVolunteerRequest(
+public record UpdateMainInfoRequest(
     FullnameDto Fullname,
     EmailDto Email,
     DescriptionDto Description,
     int EmployeeExperience,
-    TelephoneNumberDto TelephoneNumber,
-    IEnumerable<SocialNetworkDto>? SocialNetworks = null,
-    IEnumerable<RequisitDto>? Requisits = null);
+    TelephoneNumberDto TelephoneNumber);
