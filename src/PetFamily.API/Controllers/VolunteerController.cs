@@ -1,6 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using PetFamily.API.Extensions;
 using PetFamily.Application.VolunteerModule.UseCases.CreateVolunteer;
+using PetFamily.Application.VolunteerModule.UseCases.ForceDeleteVolunteer;
+using PetFamily.Application.VolunteerModule.UseCases.RestoreVolunteer;
+using PetFamily.Application.VolunteerModule.UseCases.SoftDeleteVolunteer;
 using PetFamily.Application.VolunteerModule.UseCases.UpdateMainInfoVolunteer;
 using PetFamily.Application.VolunteerModule.UseCases.UpdateRequisitsVolunteer;
 using PetFamily.Application.VolunteerModule.UseCases.UpdateSocialNetworksVolunteer;
@@ -19,12 +22,12 @@ public class VolunteerController : MainController
         CancellationToken cancellationToken)
     {
         var command = request.ToCommand();
-        var volunteer = await handler.Handle(command, cancellationToken);
+        var result = await handler.Handle(command, cancellationToken);
 
-        if (volunteer.IsFailure)
-            return volunteer.Error.ToResponse();
+        if (result.IsFailure)
+            return result.Error.ToResponse();
 
-        return Created(volunteer.Value);
+        return Created(result.Value);
     }
 
     [HttpPut("{id:guid}/main-info")]
@@ -35,12 +38,12 @@ public class VolunteerController : MainController
         CancellationToken cancellationToken)
     {
         var command = request.ToCommand(id);
-        var volunteer = await handler.Handle(command, cancellationToken);
+        var result = await handler.Handle(command, cancellationToken);
 
-        if (volunteer.IsFailure)
-            return volunteer.Error.ToResponse();
+        if (result.IsFailure)
+            return result.Error.ToResponse();
 
-        return Updated();
+        return NoContent();
     }
 
     [HttpPut("{id:guid}/requisits")]
@@ -51,12 +54,12 @@ public class VolunteerController : MainController
         CancellationToken cancellationToken)
     {
         var command = request.ToCommand(id);
-        var volunteer = await handler.Handle(command, cancellationToken);
+        var result = await handler.Handle(command, cancellationToken);
 
-        if (volunteer.IsFailure)
-            return volunteer.Error.ToResponse();
+        if (result.IsFailure)
+            return result.Error.ToResponse();
 
-        return Updated();
+        return NoContent();
     }
 
     [HttpPut("{id:guid}/social-networks")]
@@ -67,11 +70,56 @@ public class VolunteerController : MainController
         CancellationToken cancellationToken)
     {
         var command = request.ToCommand(id);
-        var volunteer = await handler.Handle(command, cancellationToken);
+        var result = await handler.Handle(command, cancellationToken);
 
-        if (volunteer.IsFailure)
-            return volunteer.Error.ToResponse();
+        if (result.IsFailure)
+            return result.Error.ToResponse();
 
-        return Updated();
+        return NoContent();
+    }
+
+    [HttpDelete("{id:guid}/soft")]
+    public async Task<IActionResult> SoftDelete(
+        [FromServices] SoftDeleteHandler handler,
+        [FromRoute] Guid id,
+        CancellationToken cancellationToken)
+    {
+        var command = new SoftDeleteCommand(id);
+        var result = await handler.Handle(command, cancellationToken);
+
+        if (result.IsFailure)
+            return result.Error.ToResponse();
+
+        return NoContent();
+    }
+
+    [HttpDelete("{id:guid}/force")]
+    public async Task<IActionResult> ForceDelete(
+        [FromServices] ForceDeleteHandler handler,
+        [FromRoute] Guid id,
+        CancellationToken cancellationToken)
+    {
+        var command = new ForceDeleteCommand(id);
+        var result = await handler.Handle(command, cancellationToken);
+
+        if (result.IsFailure)
+            return result.Error.ToResponse();
+
+        return NoContent();
+    }
+
+    [HttpGet("{id:guid}/restore")]
+    public async Task<IActionResult> Restore(
+        [FromServices] RestoreHandler handler,
+        [FromRoute] Guid id,
+        CancellationToken cancellationToken)
+    {
+        var command = new RestoreCommand(id);
+        var result = await handler.Handle(command, cancellationToken);
+
+        if (result.IsFailure)
+            return result.Error.ToResponse();
+
+        return NoContent();
     }
 }

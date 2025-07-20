@@ -11,6 +11,7 @@ public class SpeciesConfiguration : IEntityTypeConfiguration<Species>
         builder.ToTable("species");
 
         builder.HasKey(s => s.Id).HasName("pk_species");
+        builder.Property(s => s.Id).HasColumnName("id");
 
         builder.Property(s => s.Name)
             .IsRequired()

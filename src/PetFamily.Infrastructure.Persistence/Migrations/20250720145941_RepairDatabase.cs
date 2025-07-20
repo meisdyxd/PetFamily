@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace PetFamily.Infrastructure.Persistence.Migrations
 {
     /// <inheritdoc />
-    public partial class Init : Migration
+    public partial class RepairDatabase : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -15,19 +15,19 @@ namespace PetFamily.Infrastructure.Persistence.Migrations
                 name: "species",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    id = table.Column<Guid>(type: "uuid", nullable: false),
                     name = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("pk_species", x => x.Id);
+                    table.PrimaryKey("pk_species", x => x.id);
                 });
 
             migrationBuilder.CreateTable(
                 name: "volunteers",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    id = table.Column<Guid>(type: "uuid", nullable: false),
                     description = table.Column<string>(type: "text", nullable: true),
                     email = table.Column<string>(type: "text", nullable: false),
                     years_employee_exp = table.Column<int>(type: "integer", nullable: false, defaultValue: 0),
@@ -35,37 +35,40 @@ namespace PetFamily.Infrastructure.Persistence.Migrations
                     patronymic = table.Column<string>(type: "text", nullable: true),
                     surname = table.Column<string>(type: "text", nullable: false),
                     telephone_number = table.Column<string>(type: "text", nullable: false),
+                    is_deleted = table.Column<bool>(type: "boolean", nullable: false, defaultValue: false),
+                    delete_by_cascade = table.Column<bool>(type: "boolean", nullable: false, defaultValue: false),
+                    deletion_date = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
                     requisits = table.Column<string>(type: "jsonb", nullable: true),
                     social_networks = table.Column<string>(type: "jsonb", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("pk_volunteer", x => x.Id);
+                    table.PrimaryKey("pk_volunteer", x => x.id);
                 });
 
             migrationBuilder.CreateTable(
                 name: "breeds",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    id = table.Column<Guid>(type: "uuid", nullable: false),
                     name = table.Column<string>(type: "text", nullable: false),
                     species_ids = table.Column<Guid>(type: "uuid", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("pk_breed", x => x.Id);
+                    table.PrimaryKey("pk_breed", x => x.id);
                     table.ForeignKey(
                         name: "FK_breeds_species_species_ids",
                         column: x => x.species_ids,
                         principalTable: "species",
-                        principalColumn: "Id");
+                        principalColumn: "id");
                 });
 
             migrationBuilder.CreateTable(
                 name: "pets",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    id = table.Column<Guid>(type: "uuid", nullable: false),
                     moniker = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
                     coloration = table.Column<string>(type: "text", nullable: false),
                     health_info = table.Column<string>(type: "text", nullable: false),
@@ -74,7 +77,7 @@ namespace PetFamily.Infrastructure.Persistence.Migrations
                     is_castrated = table.Column<bool>(type: "boolean", nullable: false),
                     birth_date = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     is_vaccinated = table.Column<bool>(type: "boolean", nullable: false),
-                    Status = table.Column<string>(type: "text", nullable: false),
+                    status = table.Column<string>(type: "text", nullable: false),
                     created_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     volunteer_id = table.Column<Guid>(type: "uuid", nullable: true),
                     city = table.Column<string>(type: "text", nullable: false),
@@ -86,16 +89,19 @@ namespace PetFamily.Infrastructure.Persistence.Migrations
                     description = table.Column<string>(type: "text", nullable: true),
                     telephone_number = table.Column<string>(type: "text", nullable: false),
                     species_id = table.Column<Guid>(type: "uuid", nullable: false),
+                    is_deleted = table.Column<bool>(type: "boolean", nullable: false, defaultValue: false),
+                    delete_by_cascade = table.Column<bool>(type: "boolean", nullable: false, defaultValue: false),
+                    deletion_date = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
                     requisits = table.Column<string>(type: "jsonb", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("pk_pet", x => x.Id);
+                    table.PrimaryKey("pk_pet", x => x.id);
                     table.ForeignKey(
                         name: "FK_pets_volunteers_volunteer_id",
                         column: x => x.volunteer_id,
                         principalTable: "volunteers",
-                        principalColumn: "Id",
+                        principalColumn: "id",
                         onDelete: ReferentialAction.Cascade);
                 });
 

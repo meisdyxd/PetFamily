@@ -3,9 +3,13 @@ using PetFamily.API.Middlewares;
 using PetFamily.Application;
 using PetFamily.Application.VolunteerModule;
 using PetFamily.Application.VolunteerModule.UseCases.CreateVolunteer;
+using PetFamily.Application.VolunteerModule.UseCases.ForceDeleteVolunteer;
+using PetFamily.Application.VolunteerModule.UseCases.RestoreVolunteer;
+using PetFamily.Application.VolunteerModule.UseCases.SoftDeleteVolunteer;
 using PetFamily.Application.VolunteerModule.UseCases.UpdateMainInfoVolunteer;
 using PetFamily.Application.VolunteerModule.UseCases.UpdateRequisitsVolunteer;
 using PetFamily.Application.VolunteerModule.UseCases.UpdateSocialNetworksVolunteer;
+using PetFamily.Infrastructure.BackgroundServices;
 using PetFamily.Infrastructure.Persistence;
 using PetFamily.Infrastructure.Persistence.VolunteerModule;
 using Serilog;
@@ -18,6 +22,7 @@ public static class DependencyInjection
     {
         services.AddPersistence(configuration);
         services.AddApplication();
+        services.AddBackgroundServices();
 
         return services;
     }
@@ -28,6 +33,9 @@ public static class DependencyInjection
         services.AddScoped<UpdateMainInfoHandler>();
         services.AddScoped<UpdateRequisitsHandler>();
         services.AddScoped<UpdateSocialNetworksHandler>();
+        services.AddScoped<SoftDeleteHandler>();
+        services.AddScoped<ForceDeleteHandler>();
+        services.AddScoped<RestoreHandler>();
 
         return services;
     }

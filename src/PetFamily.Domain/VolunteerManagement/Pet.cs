@@ -1,4 +1,5 @@
 ﻿using CSharpFunctionalExtensions;
+using PetFamily.Domain.Shared;
 using PetFamily.Domain.Shared.Error;
 using PetFamily.Domain.Shared.ValueObjects;
 using PetFamily.Domain.VolunteerManagement.Enums;
@@ -6,7 +7,7 @@ using PetFamily.Domain.VolunteerManagement.ValueObjects;
 
 namespace PetFamily.Domain.VolunteerManagement;
 
-public class Pet : Entity<Guid>
+public class Pet : SoftDeletableEnity<Guid>
 {
     private readonly List<Requisit> _requisits = [];
 

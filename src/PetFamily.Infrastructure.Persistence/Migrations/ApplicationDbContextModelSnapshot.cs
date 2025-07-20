@@ -27,7 +27,8 @@ namespace PetFamily.Infrastructure.Persistence.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
+                        .HasColumnType("uuid")
+                        .HasColumnName("id");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -49,7 +50,8 @@ namespace PetFamily.Infrastructure.Persistence.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
+                        .HasColumnType("uuid")
+                        .HasColumnName("id");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -62,11 +64,12 @@ namespace PetFamily.Infrastructure.Persistence.Migrations
                     b.ToTable("species", (string)null);
                 });
 
-            modelBuilder.Entity("PetFamily.Domain.VolunteerManager.Pet", b =>
+            modelBuilder.Entity("PetFamily.Domain.VolunteerManagement.Pet", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
+                        .HasColumnType("uuid")
+                        .HasColumnName("id");
 
                     b.Property<DateTime>("BirthDate")
                         .HasColumnType("timestamp with time zone")
@@ -81,6 +84,16 @@ namespace PetFamily.Infrastructure.Persistence.Migrations
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("created_at");
 
+                    b.Property<bool>("DeleteByCascade")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("boolean")
+                        .HasDefaultValue(false)
+                        .HasColumnName("delete_by_cascade");
+
+                    b.Property<DateTime?>("DeletionDate")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("deletion_date");
+
                     b.Property<string>("HealthInfo")
                         .IsRequired()
                         .HasColumnType("text")
@@ -94,6 +107,12 @@ namespace PetFamily.Infrastructure.Persistence.Migrations
                         .HasColumnType("boolean")
                         .HasColumnName("is_castrated");
 
+                    b.Property<bool>("IsDeleted")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("boolean")
+                        .HasDefaultValue(false)
+                        .HasColumnName("is_deleted");
+
                     b.Property<bool>("IsVaccinated")
                         .HasColumnType("boolean")
                         .HasColumnName("is_vaccinated");
@@ -106,7 +125,8 @@ namespace PetFamily.Infrastructure.Persistence.Migrations
 
                     b.Property<string>("Status")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasColumnName("status");
 
                     b.Property<double>("Weight")
                         .HasColumnType("double precision")
@@ -115,7 +135,7 @@ namespace PetFamily.Infrastructure.Persistence.Migrations
                     b.Property<Guid?>("volunteer_id")
                         .HasColumnType("uuid");
 
-                    b.ComplexProperty<Dictionary<string, object>>("Address", "PetFamily.Domain.VolunteerManager.Pet.Address#Address", b1 =>
+                    b.ComplexProperty<Dictionary<string, object>>("Address", "PetFamily.Domain.VolunteerManagement.Pet.Address#Address", b1 =>
                         {
                             b1.IsRequired();
 
@@ -145,7 +165,7 @@ namespace PetFamily.Infrastructure.Persistence.Migrations
                                 .HasColumnName("street");
                         });
 
-                    b.ComplexProperty<Dictionary<string, object>>("Breed", "PetFamily.Domain.VolunteerManager.Pet.Breed#Breed", b1 =>
+                    b.ComplexProperty<Dictionary<string, object>>("Breed", "PetFamily.Domain.VolunteerManagement.Pet.Breed#Breed", b1 =>
                         {
                             b1.IsRequired();
 
@@ -154,7 +174,7 @@ namespace PetFamily.Infrastructure.Persistence.Migrations
                                 .HasColumnName("breed_id");
                         });
 
-                    b.ComplexProperty<Dictionary<string, object>>("Description", "PetFamily.Domain.VolunteerManager.Pet.Description#Description", b1 =>
+                    b.ComplexProperty<Dictionary<string, object>>("Description", "PetFamily.Domain.VolunteerManagement.Pet.Description#Description", b1 =>
                         {
                             b1.IsRequired();
 
@@ -164,7 +184,7 @@ namespace PetFamily.Infrastructure.Persistence.Migrations
                                 .HasColumnName("description");
                         });
 
-                    b.ComplexProperty<Dictionary<string, object>>("OwnerTelephoneNumber", "PetFamily.Domain.VolunteerManager.Pet.OwnerTelephoneNumber#TelephoneNumber", b1 =>
+                    b.ComplexProperty<Dictionary<string, object>>("OwnerTelephoneNumber", "PetFamily.Domain.VolunteerManagement.Pet.OwnerTelephoneNumber#TelephoneNumber", b1 =>
                         {
                             b1.IsRequired();
 
@@ -174,7 +194,7 @@ namespace PetFamily.Infrastructure.Persistence.Migrations
                                 .HasColumnName("telephone_number");
                         });
 
-                    b.ComplexProperty<Dictionary<string, object>>("Species", "PetFamily.Domain.VolunteerManager.Pet.Species#Species", b1 =>
+                    b.ComplexProperty<Dictionary<string, object>>("Species", "PetFamily.Domain.VolunteerManagement.Pet.Species#Species", b1 =>
                         {
                             b1.IsRequired();
 
@@ -191,13 +211,30 @@ namespace PetFamily.Infrastructure.Persistence.Migrations
                     b.ToTable("pets", (string)null);
                 });
 
-            modelBuilder.Entity("PetFamily.Domain.VolunteerManager.Volunteer", b =>
+            modelBuilder.Entity("PetFamily.Domain.VolunteerManagement.Volunteer", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
+                        .HasColumnType("uuid")
+                        .HasColumnName("id");
 
-                    b.ComplexProperty<Dictionary<string, object>>("Description", "PetFamily.Domain.VolunteerManager.Volunteer.Description#Description", b1 =>
+                    b.Property<bool>("DeleteByCascade")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("boolean")
+                        .HasDefaultValue(false)
+                        .HasColumnName("delete_by_cascade");
+
+                    b.Property<DateTime?>("DeletionDate")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("deletion_date");
+
+                    b.Property<bool>("IsDeleted")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("boolean")
+                        .HasDefaultValue(false)
+                        .HasColumnName("is_deleted");
+
+                    b.ComplexProperty<Dictionary<string, object>>("Description", "PetFamily.Domain.VolunteerManagement.Volunteer.Description#Description", b1 =>
                         {
                             b1.IsRequired();
 
@@ -207,7 +244,7 @@ namespace PetFamily.Infrastructure.Persistence.Migrations
                                 .HasColumnName("description");
                         });
 
-                    b.ComplexProperty<Dictionary<string, object>>("Email", "PetFamily.Domain.VolunteerManager.Volunteer.Email#Email", b1 =>
+                    b.ComplexProperty<Dictionary<string, object>>("Email", "PetFamily.Domain.VolunteerManagement.Volunteer.Email#Email", b1 =>
                         {
                             b1.IsRequired();
 
@@ -217,7 +254,7 @@ namespace PetFamily.Infrastructure.Persistence.Migrations
                                 .HasColumnName("email");
                         });
 
-                    b.ComplexProperty<Dictionary<string, object>>("EmployeeExperience", "PetFamily.Domain.VolunteerManager.Volunteer.EmployeeExperience#EmployeeExperience", b1 =>
+                    b.ComplexProperty<Dictionary<string, object>>("EmployeeExperience", "PetFamily.Domain.VolunteerManagement.Volunteer.EmployeeExperience#EmployeeExperience", b1 =>
                         {
                             b1.IsRequired();
 
@@ -228,7 +265,7 @@ namespace PetFamily.Infrastructure.Persistence.Migrations
                                 .HasColumnName("years_employee_exp");
                         });
 
-                    b.ComplexProperty<Dictionary<string, object>>("FullName", "PetFamily.Domain.VolunteerManager.Volunteer.FullName#FullName", b1 =>
+                    b.ComplexProperty<Dictionary<string, object>>("FullName", "PetFamily.Domain.VolunteerManagement.Volunteer.FullName#FullName", b1 =>
                         {
                             b1.IsRequired();
 
@@ -248,7 +285,7 @@ namespace PetFamily.Infrastructure.Persistence.Migrations
                                 .HasColumnName("surname");
                         });
 
-                    b.ComplexProperty<Dictionary<string, object>>("TelephoneNumber", "PetFamily.Domain.VolunteerManager.Volunteer.TelephoneNumber#TelephoneNumber", b1 =>
+                    b.ComplexProperty<Dictionary<string, object>>("TelephoneNumber", "PetFamily.Domain.VolunteerManagement.Volunteer.TelephoneNumber#TelephoneNumber", b1 =>
                         {
                             b1.IsRequired();
 
@@ -271,9 +308,9 @@ namespace PetFamily.Infrastructure.Persistence.Migrations
                         .HasForeignKey("species_ids");
                 });
 
-            modelBuilder.Entity("PetFamily.Domain.VolunteerManager.Pet", b =>
+            modelBuilder.Entity("PetFamily.Domain.VolunteerManagement.Pet", b =>
                 {
-                    b.HasOne("PetFamily.Domain.VolunteerManager.Volunteer", null)
+                    b.HasOne("PetFamily.Domain.VolunteerManagement.Volunteer", null)
                         .WithMany("Pets")
                         .HasForeignKey("volunteer_id")
                         .OnDelete(DeleteBehavior.Cascade);
@@ -318,7 +355,7 @@ namespace PetFamily.Infrastructure.Persistence.Migrations
                     b.Navigation("Requisits");
                 });
 
-            modelBuilder.Entity("PetFamily.Domain.VolunteerManager.Volunteer", b =>
+            modelBuilder.Entity("PetFamily.Domain.VolunteerManagement.Volunteer", b =>
                 {
                     b.OwnsMany("PetFamily.Domain.VolunteerManagement.ValueObjects.SocialNetwork", "SocialNetworks", b1 =>
                         {
@@ -400,7 +437,7 @@ namespace PetFamily.Infrastructure.Persistence.Migrations
                     b.Navigation("Breeds");
                 });
 
-            modelBuilder.Entity("PetFamily.Domain.VolunteerManager.Volunteer", b =>
+            modelBuilder.Entity("PetFamily.Domain.VolunteerManagement.Volunteer", b =>
                 {
                     b.Navigation("Pets");
                 });

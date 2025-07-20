@@ -1,4 +1,5 @@
 ﻿using CSharpFunctionalExtensions;
+using PetFamily.Domain.Shared;
 using PetFamily.Domain.Shared.Error;
 using PetFamily.Domain.Shared.ValueObjects;
 using PetFamily.Domain.VolunteerManagement.ValueObjects;
@@ -6,7 +7,7 @@ using PetStatus = PetFamily.Domain.VolunteerManagement.Enums.PetStatus;
 
 namespace PetFamily.Domain.VolunteerManagement;
 
-public class Volunteer: Entity<Guid>
+public class Volunteer: SoftDeletableEnity<Guid>
 {
     private List<SocialNetwork> _socialNetworks = [];
     private List<Requisit> _requisits = [];
@@ -95,6 +96,28 @@ public class Volunteer: Entity<Guid>
             : socialNetworks.ToList();
 
         return UnitResult.Success<ErrorResult>();
+    }
+
+    public override void Delete(DateTime? deletionDate = null, bool cascade = false)
+    {
+        var date = deletionDate ?? DateTime.UtcNow;
+        DeleteByCascade = cascade;
+        DeletionDate = date;
+        IsDeleted = true;
+
+        foreach (var pet in _pets.Where(p => p.IsDeleted == false))
+            pet.Delete(deletionDate: date, cascade: cascade);
+    }
+
+    public override void Restore(bool innnerCascadeDeleted = false)
+    {
+        IsDeleted = false;
+        DeletionDate = null;
+        DeleteByCascade = false;
+
+        if (innnerCascadeDeleted)
+            foreach (var pet in _pets.Where(p => p.DeleteByCascade))
+                pet.Restore(innnerCascadeDeleted);
     }
 
     public int CountPetsHomeless() =>
