@@ -18,7 +18,7 @@ public record Envelope
     public List<ErrorResponse>? Errors { get; }
     public DateTime GenerateTime { get; }
 
-    public static Envelope Successful(object? result)
+    public static Envelope Successful(object? result = null)
         => new(result, null, DateTime.UtcNow);
 
     public static Envelope Failure(List<ErrorResponse>? errors)

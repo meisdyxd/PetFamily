@@ -8,9 +8,9 @@ namespace PetFamily.Domain.VolunteerManagement;
 
 public class Volunteer: Entity<Guid>
 {
-    private readonly List<SocialNetwork> _socialNetworks = [];
-    private readonly List<Requisit> _requisits = [];
-    private readonly List<Pet> _pets = [];
+    private List<SocialNetwork> _socialNetworks = [];
+    private List<Requisit> _requisits = [];
+    private List<Pet> _pets = [];
 
     //EF Core
     protected Volunteer(Guid id) : base(id) { }
@@ -59,6 +59,42 @@ public class Volunteer: Entity<Guid>
             telephoneNumber,
             socialNetworks ?? [],
             requisits ?? []);
+    }
+
+    public UnitResult<ErrorResult> UpdateMainInfo(
+        FullName fullName,
+        Email email,
+        Description description,
+        EmployeeExperience employeeExperience,
+        TelephoneNumber telephoneNumber)
+    {
+        FullName = fullName;
+        Email = email;
+        Description = description;
+        EmployeeExperience = employeeExperience;
+        TelephoneNumber = telephoneNumber;
+
+        return UnitResult.Success<ErrorResult>();
+    }
+
+    public UnitResult<ErrorResult> UpdateRequisits(
+        IEnumerable<Requisit>? requisits)
+    {
+        _requisits = requisits is null 
+            ? [] 
+            : requisits.ToList();
+
+        return UnitResult.Success<ErrorResult>();
+    }
+
+    public UnitResult<ErrorResult> UpdateSocialNetworks(
+        IEnumerable<SocialNetwork>? socialNetworks)
+    {
+        _socialNetworks = socialNetworks is null
+            ? []
+            : socialNetworks.ToList();
+
+        return UnitResult.Success<ErrorResult>();
     }
 
     public int CountPetsHomeless() =>

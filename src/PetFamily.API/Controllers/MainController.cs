@@ -12,7 +12,7 @@ public class MainController: ControllerBase
     {
         return new OkObjectResult(Envelope.Successful(@object))
         {
-            StatusCode = 200
+            StatusCode = StatusCodes.Status200OK
         };
     }
 
@@ -20,7 +20,15 @@ public class MainController: ControllerBase
     {
         return new OkObjectResult(Envelope.Successful(@object))
         {
-            StatusCode = 201
+            StatusCode = StatusCodes.Status201Created
+        };
+    }
+
+    protected OkObjectResult Updated()
+    {
+        return new OkObjectResult(Envelope.Successful(true))
+        {
+            StatusCode = StatusCodes.Status204NoContent
         };
     }
 }

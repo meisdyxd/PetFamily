@@ -8,7 +8,7 @@ using PetFamily.Domain.Shared.ValueObjects;
 using PetFamily.Domain.VolunteerManagement;
 using PetFamily.Domain.VolunteerManagement.ValueObjects;
 
-namespace PetFamily.Application.VolunteerModule.UseCases;
+namespace PetFamily.Application.VolunteerModule.UseCases.CreateVolunteer;
 
 public class CreateVolunteerHandler
 {
@@ -33,15 +33,15 @@ public class CreateVolunteerHandler
         if (!validation.IsValid)
             return validation.ToError();
 
-        var fullName = FullName.Create(command.Surname, command.Name, command.Patronymic).Value;
+        var fullName = FullName.Create(command.Fullname.Surname, command.Fullname.Name, command.Fullname.Patronymic).Value;
 
-        var email = Email.Create(command.Email).Value;
+        var email = Email.Create(command.Email.Value).Value;
 
-        var description = Description.Create(command.Description).Value;
+        var description = Description.Create(command.Description.Value).Value;
 
         var employeeExperience = EmployeeExperience.Create(command.EmployeeExperience).Value;
 
-        var telephoneNumber = TelephoneNumber.Create(command.TelephoneNumber).Value;
+        var telephoneNumber = TelephoneNumber.Create(command.TelephoneNumber.Value).Value;
 
         var socialNetworks = command.SocialNetworks?
             .Select(sn => SocialNetwork.Create(sn.Name, sn.Link));
