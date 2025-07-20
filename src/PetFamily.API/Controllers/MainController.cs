@@ -24,7 +24,7 @@ public class MainController: ControllerBase
         };
     }
 
-    protected OkObjectResult Updated()
+    protected OkObjectResult NoContent()
     {
         return new OkObjectResult(Envelope.Successful(true))
         {

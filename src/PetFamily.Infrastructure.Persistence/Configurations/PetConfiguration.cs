@@ -13,6 +13,7 @@ public class PetConfiguration : IEntityTypeConfiguration<Pet>
         builder.ToTable("pets");
 
         builder.HasKey(p => p.Id).HasName("pk_pet");
+        builder.Property(p => p.Id).HasColumnName("id");
 
         builder.Property(p => p.Moniker)
             .HasMaxLength(Constants.Pet.MAX_MONIKER_LENGTH)
@@ -102,7 +103,8 @@ public class PetConfiguration : IEntityTypeConfiguration<Pet>
             .IsRequired()
             .HasConversion(
                 v => v.ToString(),
-                v => (PetStatus)Enum.Parse(typeof(PetStatus), v));
+                v => (PetStatus)Enum.Parse(typeof(PetStatus), v))
+            .HasColumnName("status");
 
         builder.OwnsMany(p => p.Requisits, rb =>
         {
@@ -127,5 +129,20 @@ public class PetConfiguration : IEntityTypeConfiguration<Pet>
         builder.Property(p => p.CreatedAt)
             .IsRequired()
             .HasColumnName("created_at");
+
+        builder.Property(v => v.IsDeleted)
+            .HasDefaultValue(false)
+            .IsRequired(true)
+            .HasColumnName("is_deleted");
+
+        builder.Property(v => v.DeletionDate)
+            .HasDefaultValue(null)
+            .IsRequired(false)
+            .HasColumnName("deletion_date");
+
+        builder.Property(v => v.DeleteByCascade)
+            .HasDefaultValue(false)
+            .IsRequired(true)
+            .HasColumnName("delete_by_cascade");
     }
 }

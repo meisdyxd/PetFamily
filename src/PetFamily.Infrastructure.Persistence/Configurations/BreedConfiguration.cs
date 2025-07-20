@@ -11,6 +11,7 @@ public class BreedConfiguration : IEntityTypeConfiguration<Breed>
         builder.ToTable("breeds");
 
         builder.HasKey(b => b.Id).HasName("pk_breed");
+        builder.Property(b => b.Id).HasColumnName("id");
 
         builder.Property(b => b.Name)
             .IsRequired()

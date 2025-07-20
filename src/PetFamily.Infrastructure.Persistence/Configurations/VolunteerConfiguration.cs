@@ -12,6 +12,7 @@ public class VolunteerConfiguration : IEntityTypeConfiguration<Volunteer>
         builder.ToTable("volunteers");
 
         builder.HasKey(v => v.Id).HasName("pk_volunteer");
+        builder.Property(v => v.Id).HasColumnName("id");
 
         builder.ComplexProperty(v => v.FullName, fb =>
         {
@@ -96,5 +97,22 @@ public class VolunteerConfiguration : IEntityTypeConfiguration<Volunteer>
                 .HasMaxLength(Constants.Requisit.MAX_DETAIL_INSTRUCTION_LENGTH)
                 .HasColumnName("detailInstruction");
         });
+
+        builder.Property(v => v.IsDeleted)
+            .HasDefaultValue(false)
+            .IsRequired(true)
+            .HasColumnName("is_deleted");
+
+        builder.Property(v => v.DeletionDate)
+            .HasDefaultValue(null)
+            .IsRequired(false)
+            .HasColumnName("deletion_date");
+
+        builder.Property(v => v.DeleteByCascade)
+            .HasDefaultValue(false)
+            .IsRequired(true)
+            .HasColumnName("delete_by_cascade");
+
+        builder.Navigation(v => v.Pets).AutoInclude();
     }
 }
