@@ -129,14 +129,14 @@ public class Volunteer: SoftDeletableEnity<Guid>
     public int CountPetsPendingHelp() =>
         Pets.Count(p => !p.IsDeleted && p.Status == PetStatus.PendingHelp);
 
-    public int NextSequenceNumberForPet() => !_pets.Any(p => !p.IsDeleted)
+    private int NextSequenceNumberForPet() => !_pets.Any(p => !p.IsDeleted)
             ? 1
             : _pets.Where(p => !p.IsDeleted).Max(p => p.SequenceNumber) + 1;
 
     public void RestorePet(Pet pet, bool innnerCascadeDeleted = false)
     {
         pet.SetSequenceNumber(NextSequenceNumberForPet());
-        pet.Restore(false);
+        pet.Restore(innnerCascadeDeleted);
     }
 
     public void AddPet(Pet pet)
@@ -170,6 +170,7 @@ public class Volunteer: SoftDeletableEnity<Guid>
                 .Where(p => !p.IsDeleted)
                 .Where(p => p.SequenceNumber != pet.SequenceNumber)
                 .Where(p => p.SequenceNumber < pet.SequenceNumber)
+                .Where(p => p.SequenceNumber >= toPosition)
                 .ToList()
                 .ForEach(p => p.SetSequenceNumber(p.SequenceNumber + 1));
         else
@@ -178,6 +179,7 @@ public class Volunteer: SoftDeletableEnity<Guid>
                 .Where(p => !p.IsDeleted)
                 .Where(p => p.SequenceNumber != pet.SequenceNumber)
                 .Where(p => p.SequenceNumber > pet.SequenceNumber)
+                .Where(p => p.SequenceNumber <= toPosition)
                 .ToList()
                 .ForEach(p => p.SetSequenceNumber(p.SequenceNumber - 1));
         }
@@ -196,7 +198,7 @@ public class Volunteer: SoftDeletableEnity<Guid>
         ReorderAfterDeletePet(deleteNumber);
     }
 
-    public void ReorderAfterDeletePet(int deleteNumber)
+    private void ReorderAfterDeletePet(int deleteNumber)
     {
         var petsToReorder = _pets.Where(p => p.SequenceNumber > deleteNumber);
         foreach(var pet in petsToReorder)
