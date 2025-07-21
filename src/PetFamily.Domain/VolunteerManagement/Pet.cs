@@ -14,7 +14,8 @@ public class Pet : SoftDeletableEnity<Guid>
     //ef core
     protected Pet(Guid id): base(id) { }
 
-    private Pet(string moniker,
+    private Pet(
+        string moniker,
         Species species, 
         Description description, 
         Breed breed, 
@@ -45,6 +46,7 @@ public class Pet : SoftDeletableEnity<Guid>
         CreatedAt = DateTime.UtcNow;
     }
 
+    public int SequenceNumber { get; private set; }
     public string Moniker { get; private set; }
     public Species Species { get; private set; }
     public Description Description { get; private set; }
@@ -97,5 +99,16 @@ public class Pet : SoftDeletableEnity<Guid>
             isCastrated,
             birthDate,
             isVaccinated);
+    }
+
+    public UnitResult<ErrorResult> SetSequenceNumber(int sequenceNumber)
+    {
+        if(sequenceNumber == 0 || sequenceNumber < -1)
+        {
+            Errors.General.ValueIsInvalid(nameof(sequenceNumber));
+        }
+        SequenceNumber = sequenceNumber;
+
+        return UnitResult.Success<ErrorResult>();
     }
 }

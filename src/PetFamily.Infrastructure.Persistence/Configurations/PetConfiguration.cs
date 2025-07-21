@@ -15,6 +15,10 @@ public class PetConfiguration : IEntityTypeConfiguration<Pet>
         builder.HasKey(p => p.Id).HasName("pk_pet");
         builder.Property(p => p.Id).HasColumnName("id");
 
+        builder.Property(p => p.SequenceNumber)
+            .IsRequired()
+            .HasColumnName("sequence_number");
+
         builder.Property(p => p.Moniker)
             .HasMaxLength(Constants.Pet.MAX_MONIKER_LENGTH)
             .IsRequired()

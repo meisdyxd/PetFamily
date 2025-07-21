@@ -101,7 +101,7 @@ public class Volunteer: SoftDeletableEnity<Guid>
     public override void Delete(DateTime? deletionDate = null, bool cascade = false)
     {
         var date = deletionDate ?? DateTime.UtcNow;
-        DeleteByCascade = cascade;
+        DeleteByCascade = false;
         DeletionDate = date;
         IsDeleted = true;
 
@@ -121,11 +121,90 @@ public class Volunteer: SoftDeletableEnity<Guid>
     }
 
     public int CountPetsHomeless() =>
-        Pets.Count(p => p.Status == PetStatus.Homeless);
+        Pets.Count(p => !p.IsDeleted && p.Status == PetStatus.Homeless);
 
     public int CountPetsFindHome() =>
-        Pets.Count(p => p.Status == PetStatus.FindHome);
+        Pets.Count(p => !p.IsDeleted && p.Status == PetStatus.FindHome);
 
     public int CountPetsPendingHelp() =>
-        Pets.Count(p => p.Status == PetStatus.PendingHelp);
+        Pets.Count(p => !p.IsDeleted && p.Status == PetStatus.PendingHelp);
+
+    private int NextSequenceNumberForPet() => !_pets.Any(p => !p.IsDeleted)
+            ? 1
+            : _pets.Where(p => !p.IsDeleted).Max(p => p.SequenceNumber) + 1;
+
+    public void RestorePet(Pet pet, bool innnerCascadeDeleted = false)
+    {
+        pet.SetSequenceNumber(NextSequenceNumberForPet());
+        pet.Restore(innnerCascadeDeleted);
+    }
+
+    public void AddPet(Pet pet)
+    {
+        _pets.Add(pet);
+        pet.SetSequenceNumber(NextSequenceNumberForPet());
+    }
+
+    public void MovePetToBegin(Pet pet)
+    {
+        MovePetToPosition(pet, 1);
+    }
+
+    public void MovePetToEnd(Pet pet)
+    {
+        var maxSeqNumber = _pets.Where(p => !p.IsDeleted)
+            .Max(p => p.SequenceNumber);
+        MovePetToPosition(pet, maxSeqNumber);
+    }
+
+    public UnitResult<ErrorResult> MovePetToPosition(Pet pet, int toPosition)
+    {
+        if (pet.SequenceNumber == toPosition)
+            return UnitResult.Success<ErrorResult>();
+
+        if (_pets.Count(p => !p.IsDeleted) < toPosition)
+            return Errors.General.ValueIsInvalid(nameof(toPosition));
+
+        if (pet.SequenceNumber > toPosition)
+            _pets
+                .Where(p => !p.IsDeleted)
+                .Where(p => p.SequenceNumber != pet.SequenceNumber)
+                .Where(p => p.SequenceNumber < pet.SequenceNumber)
+                .Where(p => p.SequenceNumber >= toPosition)
+                .ToList()
+                .ForEach(p => p.SetSequenceNumber(p.SequenceNumber + 1));
+        else
+        {
+            _pets
+                .Where(p => !p.IsDeleted)
+                .Where(p => p.SequenceNumber != pet.SequenceNumber)
+                .Where(p => p.SequenceNumber > pet.SequenceNumber)
+                .Where(p => p.SequenceNumber <= toPosition)
+                .ToList()
+                .ForEach(p => p.SetSequenceNumber(p.SequenceNumber - 1));
+        }
+
+        pet.SetSequenceNumber(toPosition);
+
+        return UnitResult.Success<ErrorResult>();
+    }
+
+    public void RemovePet(Pet pet)
+    {
+        var deleteNumber = pet.SequenceNumber;
+
+        pet.SetSequenceNumber(-1);
+        pet.Delete(cascade: true);
+        ReorderAfterDeletePet(deleteNumber);
+    }
+
+    private void ReorderAfterDeletePet(int deleteNumber)
+    {
+        var petsToReorder = _pets.Where(p => p.SequenceNumber > deleteNumber);
+        foreach(var pet in petsToReorder)
+        {
+            var currentSequenceNumber = pet.SequenceNumber;
+            pet.SetSequenceNumber(currentSequenceNumber - 1);
+        }
+    }
 }

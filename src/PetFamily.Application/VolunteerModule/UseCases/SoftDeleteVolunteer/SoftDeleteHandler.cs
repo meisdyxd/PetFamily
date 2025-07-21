@@ -25,8 +25,7 @@ public class SoftDeleteHandler
         if (volunteer is null)
             return Errors.General.RecordNotFound(command.Id);
 
-        var deletionDate = DateTime.UtcNow;
-        volunteer.Delete(deletionDate: deletionDate, cascade: true);
+        volunteer.Delete(cascade: true);
 
         await _repository.Save(volunteer, cancellationToken);
         _logger.LogInformation("Удалён(soft) волонтер с ID: {Id} и его внутренние элементы", volunteer.Id);
