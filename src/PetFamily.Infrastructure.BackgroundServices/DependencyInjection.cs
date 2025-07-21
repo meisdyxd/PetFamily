@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using PetFamily.Infrastructure.BackgroundServices.DeleteExpiredEntities;
+using PetFamily.Infrastructure.BackgroundServices.Options;
 
 namespace PetFamily.Infrastructure.BackgroundServices;
 

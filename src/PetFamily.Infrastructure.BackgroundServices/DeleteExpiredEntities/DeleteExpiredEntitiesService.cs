@@ -3,6 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using PetFamily.Infrastructure.BackgroundServices.Options;
 using PetFamily.Infrastructure.Persistence;
 
 namespace PetFamily.Infrastructure.BackgroundServices.DeleteExpiredEntities;
@@ -15,11 +16,11 @@ public class DeleteExpiredEntitiesService : BackgroundService
     public DeleteExpiredEntitiesService(
         ILogger<DeleteExpiredEntitiesService> logger,
         IServiceProvider serviceProvider,
-        IOptions<DeleteExpiredEntitiesOptons> options)
+        IOptionsMonitor<DeleteExpiredEntitiesOptons> options)
     {
         _serviceProvider = serviceProvider;
         _logger = logger;
-        _options = options.Value;
+        _options = options.CurrentValue;
     }
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
