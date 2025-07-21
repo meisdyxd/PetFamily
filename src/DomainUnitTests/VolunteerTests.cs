@@ -8,7 +8,7 @@ public class VolunteerTests
 {
     private Volunteer CreateVolunteer()
     {
-        var fullname = FullName.Create("Карлов", "Артур", null).Value;
+        var fullname = FullName.Create("РљР°СЂР»РѕРІ", "РђСЂС‚СѓСЂ", null).Value;
         var email = Email.Create("test@example.com").Value;
         var description = Description.Create(null).Value;
         var experience = EmployeeExperience.Create(5).Value;
@@ -30,7 +30,7 @@ public class VolunteerTests
         var species = new Species(Guid.NewGuid());
         var breed = new Breed(Guid.NewGuid());
         var description = Description.Create(null).Value;
-        var address = Address.Create("Россия", "Регион", "Город", "Улица", "1").Value;
+        var address = Address.Create("Р РѕСЃСЃРёСЏ", "Р РµРіРёРѕРЅ", "Р“РѕСЂРѕРґ", "РЈР»РёС†Р°", "1").Value;
         var phone = TelephoneNumber.Create("79999999999").Value;
 
         return Pet.Create(
@@ -38,8 +38,8 @@ public class VolunteerTests
             species,
             description,
             breed,
-            "Окрас",
-            "Здоров",
+            "РћРєСЂР°СЃ",
+            "Р—РґРѕСЂРѕРІ",
             address,
             10.0,
             20.0,
@@ -65,7 +65,7 @@ public class VolunteerTests
     public void AddPet_FirstPet_SequenceNumberIs1()
     {
         var volunteer = CreateVolunteer();
-        var pet = CreatePet("Хан");
+        var pet = CreatePet("РҐР°РЅ");
 
         volunteer.AddPet(pet);
 
@@ -77,8 +77,8 @@ public class VolunteerTests
     public void AddPet_MultiplePets_IncrementsSequenceNumber()
     {
         var volunteer = CreateVolunteer();
-        var pet1 = CreatePet("Хан");
-        var pet2 = CreatePet("Марсик");
+        var pet1 = CreatePet("РҐР°РЅ");
+        var pet2 = CreatePet("РњР°СЂСЃРёРє");
 
         volunteer.AddPet(pet1);
         volunteer.AddPet(pet2);
@@ -90,22 +90,22 @@ public class VolunteerTests
     [Fact]
     public void RemovePet_DeletesPetAndReordersSequence()
     {
-        var volunteer = CreateVolunteerWithPets("Хан", "Марсик", "Кеша");
-        var petToRemove = volunteer.Pets[1]; // Марсик
+        var volunteer = CreateVolunteerWithPets("РҐР°РЅ", "РњР°СЂСЃРёРє", "РљРµС€Р°");
+        var petToRemove = volunteer.Pets[1]; // РњР°СЂСЃРёРє
 
         volunteer.RemovePet(petToRemove);
 
         Assert.True(petToRemove.IsDeleted);
         Assert.Equal(-1, petToRemove.SequenceNumber);
 
-        Assert.Equal(1, volunteer.Pets[0].SequenceNumber); // Хан
-        Assert.Equal(2, volunteer.Pets[2].SequenceNumber); // Кеша
+        Assert.Equal(1, volunteer.Pets[0].SequenceNumber); // РҐР°РЅ
+        Assert.Equal(2, volunteer.Pets[2].SequenceNumber); // РљРµС€Р°
     }
 
     [Fact]
     public void RemovePet_LastPet_DoesNotReorder()
     {
-        var volunteer = CreateVolunteerWithPets("Хан");
+        var volunteer = CreateVolunteerWithPets("РҐР°РЅ");
         var petToRemove = volunteer.Pets[0];
 
         volunteer.RemovePet(petToRemove);
@@ -117,14 +117,14 @@ public class VolunteerTests
     [Fact]
     public void MovePetToBegin_MovesToFirstPosition()
     {
-        var volunteer = CreateVolunteerWithPets("Хан", "Марсик", "Кеша");
-        var petToMove = volunteer.Pets[2]; // Кеша (Seq=3)
+        var volunteer = CreateVolunteerWithPets("РҐР°РЅ", "РњР°СЂСЃРёРє", "РљРµС€Р°");
+        var petToMove = volunteer.Pets[2]; // РљРµС€Р° (Seq=3)
 
         volunteer.MovePetToBegin(petToMove);
 
-        // Проверка порядка
+        // РџСЂРѕРІРµСЂРєР° РїРѕСЂСЏРґРєР°
         Assert.Equal(1, petToMove.SequenceNumber);
-        Assert.Equal("Хан", volunteer.Pets[0].Moniker);
+        Assert.Equal("РҐР°РЅ", volunteer.Pets[0].Moniker);
         Assert.Equal(3, volunteer.Pets[1].SequenceNumber);
         Assert.Equal(1, volunteer.Pets[2].SequenceNumber);
     }
@@ -132,7 +132,7 @@ public class VolunteerTests
     [Fact]
     public void MovePetToBegin_AlreadyFirst_NoChanges()
     {
-        var volunteer = CreateVolunteerWithPets("Хан", "Марсик");
+        var volunteer = CreateVolunteerWithPets("РҐР°РЅ", "РњР°СЂСЃРёРє");
         var firstPet = volunteer.Pets[0];
 
         volunteer.MovePetToBegin(firstPet);
@@ -144,13 +144,13 @@ public class VolunteerTests
     [Fact]
     public void MovePetToEnd_MovesToLastPosition()
     {
-        var volunteer = CreateVolunteerWithPets("Хан", "Марсик", "Кеша");
-        var petToMove = volunteer.Pets[0]; // Хан
+        var volunteer = CreateVolunteerWithPets("РҐР°РЅ", "РњР°СЂСЃРёРє", "РљРµС€Р°");
+        var petToMove = volunteer.Pets[0]; // РҐР°РЅ
 
         volunteer.MovePetToEnd(petToMove);
 
         Assert.Equal(3, petToMove.SequenceNumber);
-        Assert.Equal("Хан", volunteer.Pets[0].Moniker);
+        Assert.Equal("РҐР°РЅ", volunteer.Pets[0].Moniker);
         Assert.Equal(1, volunteer.Pets[1].SequenceNumber); 
         Assert.Equal(2, volunteer.Pets[2].SequenceNumber); 
     }
@@ -158,7 +158,7 @@ public class VolunteerTests
     [Fact]
     public void MovePetToEnd_AlreadyLast_NoChanges()
     {
-        var volunteer = CreateVolunteerWithPets("Хан", "Марсик");
+        var volunteer = CreateVolunteerWithPets("РҐР°РЅ", "РњР°СЂСЃРёРє");
         var lastPet = volunteer.Pets[1];
 
         volunteer.MovePetToEnd(lastPet);
@@ -170,15 +170,15 @@ public class VolunteerTests
     [Fact]
     public void MovePetToPosition_ValidPosition_ReordersPets()
     {
-        var volunteer = CreateVolunteerWithPets("Хан", "Марсик", "Кеша");
+        var volunteer = CreateVolunteerWithPets("РҐР°РЅ", "РњР°СЂСЃРёРє", "РљРµС€Р°");
         var petToMove = volunteer.Pets[0];
 
         volunteer.MovePetToPosition(petToMove, 2);
 
         Assert.Equal(2, petToMove.SequenceNumber);
-        Assert.Equal("Хан", volunteer.Pets[0].Moniker); 
-        Assert.Equal("Марсик", volunteer.Pets[1].Moniker); 
-        Assert.Equal("Кеша", volunteer.Pets[2].Moniker);
+        Assert.Equal("РҐР°РЅ", volunteer.Pets[0].Moniker); 
+        Assert.Equal("РњР°СЂСЃРёРє", volunteer.Pets[1].Moniker); 
+        Assert.Equal("РљРµС€Р°", volunteer.Pets[2].Moniker);
         Assert.Equal(1, volunteer.Pets[1].SequenceNumber);
         Assert.Equal(3, volunteer.Pets[2].SequenceNumber);
     }
@@ -186,7 +186,7 @@ public class VolunteerTests
     [Fact]
     public void MovePetToPosition_InvalidPosition_ReturnsError()
     {
-        var volunteer = CreateVolunteerWithPets("Хан", "Марсик");
+        var volunteer = CreateVolunteerWithPets("РҐР°РЅ", "РњР°СЂСЃРёРє");
         var petToMove = volunteer.Pets[0];
 
         var result = volunteer.MovePetToPosition(petToMove, 5);
@@ -197,16 +197,16 @@ public class VolunteerTests
     [Fact]
     public void RestorePet_RestoresDeletedPet()
     {
-        var volunteer = CreateVolunteerWithPets("Хан");
+        var volunteer = CreateVolunteerWithPets("РҐР°РЅ");
         var pet = volunteer.Pets[0];
 
-        // Удаляем питомца БЕЗ каскада (чтобы можно было восстановить)
+        // РЈРґР°Р»СЏРµРј РїРёС‚РѕРјС†Р° Р‘Р•Р— РєР°СЃРєР°РґР° (С‡С‚РѕР±С‹ РјРѕР¶РЅРѕ Р±С‹Р»Рѕ РІРѕСЃСЃС‚Р°РЅРѕРІРёС‚СЊ)
         pet.Delete(cascade: false);
         pet.SetSequenceNumber(-1);
 
         volunteer.RestorePet(pet, innnerCascadeDeleted: true);
 
         Assert.False(pet.IsDeleted);
-        Assert.Equal(1, pet.SequenceNumber); // Новый номер
+        Assert.Equal(1, pet.SequenceNumber); // РќРѕРІС‹Р№ РЅРѕРјРµСЂ
     }
 }
