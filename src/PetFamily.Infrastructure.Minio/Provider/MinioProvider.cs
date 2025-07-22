@@ -1,5 +1,8 @@
-﻿namespace PetFamily.Infrastructure.Minio.Provider;
+﻿using PetFamily.Application.Minio;
 
-public class MinioProvider
+namespace PetFamily.Infrastructure.Minio.Provider;
+
+public class MinioProvider: IFilesProvider
 {
+
 }
