@@ -47,4 +47,17 @@ public static class Errors
             return ErrorResult.Create(error);
         }
     }
+
+    public static class Minio 
+    {
+        public static ErrorResult UploadError(string message, string errorCode)
+        {
+            var error = new List<ErrorResponse>
+            {
+                new ErrorResponse("upload.file", message, errorCode)
+            };
+
+            return ErrorResult.Create(error);
+        }
+    }
 }

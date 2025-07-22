@@ -2,7 +2,7 @@ using PetFamily.Domain.Shared.ValueObjects;
 using PetFamily.Domain.VolunteerManagement;
 using PetFamily.Domain.VolunteerManagement.ValueObjects;
 
-namespace PetFamily.UnitTests;
+namespace DomainUnitTests;
 
 public class VolunteerTests
 {
