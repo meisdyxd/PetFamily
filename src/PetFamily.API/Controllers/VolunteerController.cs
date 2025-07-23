@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using PetFamily.API.Extensions;
+using PetFamily.Application.VolunteerModule.UseCases.AddPetToVolunteer;
 using PetFamily.Application.VolunteerModule.UseCases.CreateVolunteer;
 using PetFamily.Application.VolunteerModule.UseCases.ForceDeleteVolunteer;
 using PetFamily.Application.VolunteerModule.UseCases.RestoreVolunteer;
@@ -121,5 +122,21 @@ public class VolunteerController : MainController
             return result.Error.ToResponse();
 
         return NoContent();
+    }
+
+    [HttpPost("{id:guid}/pet")]
+    public async Task<IActionResult> AddPet(
+        [FromServices] AddPetHandler handler,
+        [FromRoute] Guid id,
+        [FromBody] AddPetRequest addRequest,
+        CancellationToken cancellationToken)
+    {
+        var command = addRequest.ToCommand(id);
+        var result = await handler.Handle(command, cancellationToken);
+
+        if (result.IsFailure)
+            return result.Error.ToResponse();
+
+        return Created();
     }
 }
