@@ -20,6 +20,19 @@ services:
       SEQ_FIRSTRUN_ADMINPASSWORD: secure
     ports:
       - 5341:80
+  minio:  
+    image: minio/minio:latest  
+    container_name: minio  
+    restart: unless-stopped  
+    ports:
+      - 9000:9000
+      - 9001:9001
+    volumes:  
+      - minio-storage:/data  
+      - minio-config:/root/.minio  
+    command: server /data --console-address ":9001" 
 volumes:
-  postgres-data:    
+  postgres-data:
+  minio-storage:
+  minio-config:
   

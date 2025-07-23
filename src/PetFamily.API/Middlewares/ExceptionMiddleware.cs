@@ -29,7 +29,7 @@ public class ExceptionMiddleware
             var message = Envelope.Failure([errorResult.GetError()]);
 
             await context.Response.WriteAsJsonAsync(message, typeof(Envelope));
-            _logger.LogCritical("An occured error: {message}", ex.StackTrace);
+            _logger.LogCritical("An occured error. {message}.\n{stacktrace}", ex.Message, ex.StackTrace);
         }
         
     }

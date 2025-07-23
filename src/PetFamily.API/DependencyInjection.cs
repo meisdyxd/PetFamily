@@ -10,6 +10,7 @@ using PetFamily.Application.VolunteerModule.UseCases.UpdateMainInfoVolunteer;
 using PetFamily.Application.VolunteerModule.UseCases.UpdateRequisitsVolunteer;
 using PetFamily.Application.VolunteerModule.UseCases.UpdateSocialNetworksVolunteer;
 using PetFamily.Infrastructure.BackgroundServices;
+using PetFamily.Infrastructure.Minio;
 using PetFamily.Infrastructure.Persistence;
 using PetFamily.Infrastructure.Persistence.VolunteerModule;
 using Serilog;
@@ -23,6 +24,7 @@ public static class DependencyInjection
         services.AddPersistence(configuration);
         services.AddApplication();
         services.AddBackgroundServices(configuration);
+        services.AddMinio(configuration);
 
         return services;
     }
