@@ -1,4 +1,5 @@
 ﻿using CSharpFunctionalExtensions;
+using PetFamily.Application.SpeciesModule;
 using PetFamily.Application.VolunteerModule.Extensions;
 using PetFamily.Application.VolunteerModule.ValidationRules;
 using PetFamily.Domain.Shared.Error;
@@ -10,11 +11,15 @@ namespace PetFamily.Application.VolunteerModule.UseCases.AddPetToVolunteer;
 
 public class AddPetHandler
 {
-    private readonly IVolunteerRepository _repository;
+    private readonly IVolunteerRepository _volunteerRepository;
+    private readonly ISpeciesRepository _speciesRepository;
 
-    public AddPetHandler(IVolunteerRepository repository)
+    public AddPetHandler(
+        IVolunteerRepository volunteerRepository,
+        ISpeciesRepository speciesRepository)
     {
-        _repository = repository;
+        _volunteerRepository = volunteerRepository;
+        _speciesRepository = speciesRepository;
     }
 
     public async Task<Result<Guid, ErrorResult>> Handle(
@@ -27,12 +32,16 @@ public class AddPetHandler
         if (!validation.IsValid)
             return validation.ToError();
 
-        var volunteer = await _repository.GetById(command.Id, cancellationToken);
+        var volunteer = await _volunteerRepository.GetById(command.Id, cancellationToken);
         if (volunteer == null)
             return Errors.General.RecordNotFound(command.Id);
 
+        var existSpeciesAndBreed = await _speciesRepository.ExistBreed(command.Species.Id, command.Breed.Id, cancellationToken);
+        if (!existSpeciesAndBreed)
+            return Errors.General.RecordNotFound(command.Species.Id);
+
         var moniker = command.Moniker;
-        var species = new Species(command.Species.Id);
+        var speciesVO = new Species(command.Species.Id);
         var description = Description.Create(command.Description.Value).Value;
         var breed = new Breed(command.Breed.Id);
         var coloration = command.Coloration;
@@ -52,7 +61,7 @@ public class AddPetHandler
 
         var pet = Pet.Create(
             moniker,
-            species,
+            speciesVO,
             description,
             breed,
             coloration,
@@ -70,7 +79,7 @@ public class AddPetHandler
 
         volunteer.AddPet(pet.Value);
 
-        await _repository.Save(volunteer, cancellationToken);
+        await _volunteerRepository.Save(volunteer, cancellationToken);
 
         return pet.Value.Id;
     }

@@ -20,4 +20,6 @@ public class Species: Entity<Guid>
     {
         return new(name);
     }
+
+    public bool HasBreed(Guid breedId) => _breeds.Any(b => b.Id == breedId);
 }
