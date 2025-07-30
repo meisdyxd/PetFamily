@@ -1,6 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using PetFamily.API.Contracts.Requests;
 using PetFamily.API.Extensions;
+using PetFamily.API.Processors;
 using PetFamily.Application.VolunteerModule.UseCases.AddPetToVolunteer;
+using PetFamily.Application.VolunteerModule.UseCases.AddPhotosToPet;
 using PetFamily.Application.VolunteerModule.UseCases.CreateVolunteer;
 using PetFamily.Application.VolunteerModule.UseCases.ForceDeleteVolunteer;
 using PetFamily.Application.VolunteerModule.UseCases.RestoreVolunteer;
@@ -137,6 +140,27 @@ public class VolunteerController : MainController
         if (result.IsFailure)
             return result.Error.ToResponse();
 
-        return Created();
+        return Created(result.Value);
+    }
+
+    [HttpPost("{id:guid}/pet/{petId:guid}/photos")]
+    public async Task<IActionResult> AddPhotosToPet(
+        [FromServices] AddPhotosToPetHandler handler,
+        AddPhotosToPetRequest request,
+        [FromRoute] Guid petId,
+        [FromRoute] Guid id)
+    {
+        await using var processor = new FormFIleProcessor();
+        var files = processor.Process(request.Files);
+        
+        var command = new AddPhotosToPetCommand(
+            id, 
+            petId, 
+            files,
+            request.Title,
+            request.Description);
+        
+        
+        return NoContent();
     }
 }
