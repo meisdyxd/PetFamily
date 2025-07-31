@@ -130,6 +130,14 @@ public class PetConfiguration : IEntityTypeConfiguration<Pet>
                 .HasColumnName("detailInstruction");
         });
 
+        builder.OwnsMany(p => p.Photos, pb =>
+        {
+            pb.ToJson("photos");
+            
+            pb.Property(p => p.Filename)
+                .HasColumnName("filename");
+        });
+
         builder.Property(p => p.CreatedAt)
             .IsRequired()
             .HasColumnName("created_at");

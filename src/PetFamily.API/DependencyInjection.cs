@@ -4,7 +4,9 @@ using PetFamily.Application;
 using PetFamily.Application.SpeciesModule;
 using PetFamily.Application.VolunteerModule;
 using PetFamily.Application.VolunteerModule.UseCases.AddPetToVolunteer;
+using PetFamily.Application.VolunteerModule.UseCases.AddPhotosToPet;
 using PetFamily.Application.VolunteerModule.UseCases.CreateVolunteer;
+using PetFamily.Application.VolunteerModule.UseCases.DeletePhotosPet;
 using PetFamily.Application.VolunteerModule.UseCases.ForceDeleteVolunteer;
 using PetFamily.Application.VolunteerModule.UseCases.RestoreVolunteer;
 using PetFamily.Application.VolunteerModule.UseCases.SoftDeleteVolunteer;
@@ -42,6 +44,8 @@ public static class DependencyInjection
         services.AddScoped<ForceDeleteHandler>();
         services.AddScoped<RestoreHandler>();
         services.AddScoped<AddPetHandler>();
+        services.AddScoped<AddPhotosToPetHandler>();
+        services.AddScoped<DeletePhotosPetHandler>();
 
         return services;
     }

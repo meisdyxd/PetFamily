@@ -10,6 +10,7 @@ namespace PetFamily.Domain.VolunteerManagement;
 public class Pet : SoftDeletableEnity<Guid>
 {
     private readonly List<Requisit> _requisits = [];
+    private readonly List<Photo> _photos = [];
 
     //ef core
     protected Pet(Guid id): base(id) { }
@@ -62,6 +63,7 @@ public class Pet : SoftDeletableEnity<Guid>
     public bool IsVaccinated { get; private set; }
     public PetStatus Status { get; private set; }
     public IReadOnlyList<Requisit> Requisits => _requisits;
+    public IReadOnlyList<Photo> Photos => _photos;
     public DateTime CreatedAt { get; private set; }
 
     public static Result<Pet, ErrorResult> Create(
@@ -99,6 +101,16 @@ public class Pet : SoftDeletableEnity<Guid>
             isCastrated,
             birthDate,
             isVaccinated);
+    }
+
+    public void AddPhoto(Photo photo)
+    {
+        _photos.Add(photo);
+    }
+
+    public void DeletePhoto(Photo photo)
+    {
+        _photos.Remove(photo);
     }
 
     public UnitResult<ErrorResult> SetSequenceNumber(int sequenceNumber)

@@ -38,4 +38,9 @@ public static class Constants
         public const int MAX_NAME_LENGTH = 64;
         public const int MAX_LINK_LENGTH = 128;
     }
+
+    public static class StorageBuckets
+    {
+        public const string PhotosBucket = "photos";
+    }
 }

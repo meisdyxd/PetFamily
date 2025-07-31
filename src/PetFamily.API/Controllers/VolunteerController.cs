@@ -5,6 +5,7 @@ using PetFamily.API.Processors;
 using PetFamily.Application.VolunteerModule.UseCases.AddPetToVolunteer;
 using PetFamily.Application.VolunteerModule.UseCases.AddPhotosToPet;
 using PetFamily.Application.VolunteerModule.UseCases.CreateVolunteer;
+using PetFamily.Application.VolunteerModule.UseCases.DeletePhotosPet;
 using PetFamily.Application.VolunteerModule.UseCases.ForceDeleteVolunteer;
 using PetFamily.Application.VolunteerModule.UseCases.RestoreVolunteer;
 using PetFamily.Application.VolunteerModule.UseCases.SoftDeleteVolunteer;
@@ -146,9 +147,10 @@ public class VolunteerController : MainController
     [HttpPost("{id:guid}/pet/{petId:guid}/photos")]
     public async Task<IActionResult> AddPhotosToPet(
         [FromServices] AddPhotosToPetHandler handler,
-        AddPhotosToPetRequest request,
+        [FromForm] AddPhotosToPetRequest request,
         [FromRoute] Guid petId,
-        [FromRoute] Guid id)
+        [FromRoute] Guid id,
+        CancellationToken cancellationToken)
     {
         await using var processor = new FormFIleProcessor();
         var files = processor.Process(request.Files);
@@ -159,7 +161,26 @@ public class VolunteerController : MainController
             files,
             request.Title,
             request.Description);
+
+        var result = await handler.Handle(command, cancellationToken);
         
+        return NoContent();
+    }
+    
+    [HttpDelete("{id:guid}/pet/{petId:guid}/photos")]
+    public async Task<IActionResult> DeletePhotosPet(
+        [FromServices] DeletePhotosPetHandler handler,
+        [FromBody] DeletePhotosPetRequest request,
+        [FromRoute] Guid petId,
+        [FromRoute] Guid id,
+        CancellationToken cancellationToken)
+    {
+        var command = new DeletePhotosPetCommand(
+            id, 
+            petId, 
+            request.Filenames);
+
+        var result = await handler.Handle(command, cancellationToken);
         
         return NoContent();
     }
