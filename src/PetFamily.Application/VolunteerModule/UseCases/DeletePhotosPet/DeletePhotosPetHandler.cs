@@ -43,7 +43,6 @@ public class DeletePhotosPetHandler
                 if (photo == null) continue;
                 pet.DeletePhoto(photo);
                 await _filesProvider.DeleteFileAsync(Bucket, filename, cancellationToken);
-                _logger.LogInformation("Удалена фотография {name} у питомца {pet}", filename, command.PetId);
             }
             await _repository.Save(volunteer, cancellationToken);
         }
