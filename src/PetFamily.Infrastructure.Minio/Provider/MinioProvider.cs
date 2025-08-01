@@ -53,10 +53,16 @@ public class MinioProvider : IFilesProvider
             .WithObject(fileName)
             .WithObjectSize(stream.Length)
             .WithContentType("application/octet-stream");
-
-        var result = await _minioClient.PutObjectAsync(putObjectArgs, cancellationToken);
-        if ((int)result.ResponseStatusCode > 299)
-            return Errors.Minio.UploadError("Ошибка загрузки файла", result.ResponseStatusCode.ToString());
+        try
+        {
+            var result = await _minioClient.PutObjectAsync(putObjectArgs, cancellationToken);
+            if ((int)result.ResponseStatusCode > 299)
+                return Errors.Minio.UploadError("Ошибка загрузки файла", result.ResponseStatusCode.ToString());
+        }
+        catch
+        {
+            return Errors.Minio.UploadError("Ошибка загрузки файла", "500");
+        }
 
         _logger.LogInformation("Uploaded file in {bucket} with name {name}", bucketName, fileName);
         return UnitResult.Success<ErrorResult>();

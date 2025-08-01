@@ -1,8 +1,12 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using PetFamily.API.Middlewares;
 using PetFamily.Application;
+using PetFamily.Application.SpeciesModule;
 using PetFamily.Application.VolunteerModule;
+using PetFamily.Application.VolunteerModule.UseCases.AddPetToVolunteer;
+using PetFamily.Application.VolunteerModule.UseCases.AddPhotosToPet;
 using PetFamily.Application.VolunteerModule.UseCases.CreateVolunteer;
+using PetFamily.Application.VolunteerModule.UseCases.DeletePhotosPet;
 using PetFamily.Application.VolunteerModule.UseCases.ForceDeleteVolunteer;
 using PetFamily.Application.VolunteerModule.UseCases.RestoreVolunteer;
 using PetFamily.Application.VolunteerModule.UseCases.SoftDeleteVolunteer;
@@ -12,6 +16,7 @@ using PetFamily.Application.VolunteerModule.UseCases.UpdateSocialNetworksVolunte
 using PetFamily.Infrastructure.BackgroundServices;
 using PetFamily.Infrastructure.Minio;
 using PetFamily.Infrastructure.Persistence;
+using PetFamily.Infrastructure.Persistence.SpeciesModule;
 using PetFamily.Infrastructure.Persistence.VolunteerModule;
 using Serilog;
 
@@ -38,6 +43,9 @@ public static class DependencyInjection
         services.AddScoped<SoftDeleteHandler>();
         services.AddScoped<ForceDeleteHandler>();
         services.AddScoped<RestoreHandler>();
+        services.AddScoped<AddPetHandler>();
+        services.AddScoped<AddPhotosToPetHandler>();
+        services.AddScoped<DeletePhotosPetHandler>();
 
         return services;
     }
@@ -45,6 +53,7 @@ public static class DependencyInjection
     public static IServiceCollection AddRepositories(this IServiceCollection services)
     {
         services.AddScoped<IVolunteerRepository, VolunteerRepository>();
+        services.AddScoped<ISpeciesRepository, SpeciesRepository>();
 
         return services;
     }

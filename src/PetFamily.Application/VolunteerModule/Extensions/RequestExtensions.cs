@@ -1,4 +1,5 @@
-﻿using PetFamily.Application.VolunteerModule.UseCases.CreateVolunteer;
+﻿using PetFamily.Application.VolunteerModule.UseCases.AddPetToVolunteer;
+using PetFamily.Application.VolunteerModule.UseCases.CreateVolunteer;
 using PetFamily.Application.VolunteerModule.UseCases.UpdateMainInfoVolunteer;
 using PetFamily.Application.VolunteerModule.UseCases.UpdateRequisitsVolunteer;
 using PetFamily.Application.VolunteerModule.UseCases.UpdateSocialNetworksVolunteer;
@@ -49,5 +50,26 @@ public static class RequestExtensions
         return new(
             Id,
             request.SocialNetworks);
+    }
+
+    public static AddPetCommand ToCommand(
+        this AddPetRequest request, 
+        Guid Id)
+    {
+        return new(
+            Id,
+            request.Moniker,
+            request.Species,
+            request.Description,
+            request.Breed,
+            request.Coloration,
+            request.HealthInfo,
+            request.Address,
+            request.Weight,
+            request.Height,
+            request.OwnerTelephoneNumber,
+            request.IsCastrated,
+            request.BirthDate,
+            request.IsVaccinated);
     }
 }
