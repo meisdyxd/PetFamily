@@ -6,6 +6,7 @@ using PetFamily.Application.VolunteerModule.ValidationRules;
 using PetFamily.Domain.Shared;
 using PetFamily.Domain.Shared.Error;
 using PetFamily.Domain.VolunteerManagement.ValueObjects;
+using System.Collections.Concurrent;
 
 namespace PetFamily.Application.VolunteerModule.UseCases.AddPhotosToPet;
 
@@ -44,8 +45,8 @@ public class AddPhotosToPetHandler
         
         if (!await _filesProvider.ExistBucketAsync(Bucket, cancellationToken))
             await _filesProvider.CreateBucketAsync(Bucket, cancellationToken);
-        var semaphore = new SemaphoreSlim(5, 5);
-        var uploadedFiles = new List<string>();
+        var semaphore = new SemaphoreSlim(20, 20);
+        var uploadedFiles = new ConcurrentBag<string>();
         var errors = new List<ErrorResponse>();
         try
         {
@@ -63,10 +64,7 @@ public class AddPhotosToPetHandler
 
                     if (result.IsSuccess)
                     {
-                        lock (uploadedFiles)
-                        {
-                            uploadedFiles.Add(filename);
-                        }
+                        uploadedFiles.Add(filename);
                     }
                     else
                     {
@@ -97,7 +95,10 @@ public class AddPhotosToPetHandler
                 return ErrorResult.Create(errors);
             }
             var pet = volunteer.Pets.First(x => x.Id == command.PetId);
-            uploadedFiles.ForEach(filename => pet.AddPhoto(new Photo(filename)));
+            foreach (var filename in uploadedFiles)
+            {
+                pet.AddPhoto(new Photo(filename));
+            } 
             await _volunteerRepository.Save(volunteer, cancellationToken);
         }
         catch (Exception ex)
@@ -110,7 +111,7 @@ public class AddPhotosToPetHandler
     }
     
     private async Task RollbackUploads(
-        List<string> uploadedFiles, 
+        ConcurrentBag<string> uploadedFiles, 
         CancellationToken cancellationToken)
     {
         var deleteTasks = uploadedFiles.Select(filename => 
