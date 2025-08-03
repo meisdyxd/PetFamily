@@ -164,6 +164,9 @@ public class Volunteer: SoftDeletableEnity<Guid>
 
         if (_pets.Count(p => !p.IsDeleted) < toPosition)
             return Errors.General.ValueIsInvalid(nameof(toPosition));
+        
+        if (toPosition < 1)
+            return Errors.General.ValueIsInvalid(nameof(toPosition));
 
         if (pet.SequenceNumber > toPosition)
             _pets

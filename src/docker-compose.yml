@@ -2,7 +2,7 @@ services:
   postgres:
     container_name: postgres
     image: postgres
-    restart: always
+    restart: no
     environment:
       POSTGRES_DB: pet_family
       POSTGRES_USER: postgres
@@ -14,7 +14,7 @@ services:
   seq:
     container_name: seq
     image: datalust/seq
-    restart: always
+    restart: no
     environment:
       ACCEPT_EULA: Y
       SEQ_FIRSTRUN_ADMINPASSWORD: secure
@@ -23,7 +23,7 @@ services:
   minio:  
     image: minio/minio:latest  
     container_name: minio  
-    restart: unless-stopped  
+    restart: no 
     ports:
       - 9000:9000
       - 9001:9001
