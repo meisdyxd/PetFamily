@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using PetFamily.API.Extensions;
 using PetFamily.Application.Minio;
 
@@ -15,7 +15,7 @@ public class FileController : MainController
 
     [HttpPost]
     public async Task<IActionResult> Upload(
-        [FromRoute] string bucket,
+        [FromQuery] string bucket,
         IFormFile file,
         CancellationToken cancellationToken)
     {

@@ -7,6 +7,7 @@ using PetFamily.Application.VolunteerModule.UseCases.AddPhotosToPet;
 using PetFamily.Application.VolunteerModule.UseCases.CreateVolunteer;
 using PetFamily.Application.VolunteerModule.UseCases.DeletePhotosPet;
 using PetFamily.Application.VolunteerModule.UseCases.ForceDeleteVolunteer;
+using PetFamily.Application.VolunteerModule.UseCases.MovePetPosition;
 using PetFamily.Application.VolunteerModule.UseCases.RestoreVolunteer;
 using PetFamily.Application.VolunteerModule.UseCases.SoftDeleteVolunteer;
 using PetFamily.Application.VolunteerModule.UseCases.UpdateMainInfoVolunteer;
@@ -158,9 +159,7 @@ public class VolunteerController : MainController
         var command = new AddPhotosToPetCommand(
             id, 
             petId, 
-            files,
-            request.Title,
-            request.Description);
+            files);
 
         var result = await handler.Handle(command, cancellationToken);
         
@@ -181,6 +180,28 @@ public class VolunteerController : MainController
             request.Filenames);
 
         var result = await handler.Handle(command, cancellationToken);
+        
+        return NoContent();
+    }
+
+    [HttpPut("{id:guid}/pet/{petId:guid}/position")]
+    public async Task<IActionResult> MovePetPosition(
+        [FromServices] MovePetPositionHandler handler,
+        [FromQuery] int? position,
+        [FromQuery] string? direction,
+        [FromRoute] Guid id,
+        [FromRoute] Guid petId,
+        CancellationToken cancellationToken)
+    {
+        var command = new MovePetPositionCommand(
+            id,
+            petId,
+            Position: position,
+            Direction: direction);
+        
+        var result = await handler.Handle(command, cancellationToken);
+        if (result.IsFailure)
+            return result.Error.ToResponse();
         
         return NoContent();
     }

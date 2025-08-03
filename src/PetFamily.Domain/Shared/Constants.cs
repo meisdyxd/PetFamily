@@ -7,6 +7,8 @@ public static class Constants
     public static class Pet
     {
         public const int MAX_MONIKER_LENGTH = 100;
+        public const string DIRECTION_END = "end";
+        public const string DIRECTION_BEGIN = "begin";
     }
 
     public static class TelephoneNumber 

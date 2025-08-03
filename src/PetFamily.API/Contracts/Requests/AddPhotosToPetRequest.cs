@@ -1,3 +1,3 @@
 namespace PetFamily.API.Contracts.Requests;
 
-public record AddPhotosToPetRequest(string Title, string Description, IFormFileCollection Files);
+public record AddPhotosToPetRequest(FormFileCollection Files);
