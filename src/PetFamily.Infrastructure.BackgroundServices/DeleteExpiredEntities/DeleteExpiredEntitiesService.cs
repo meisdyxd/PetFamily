@@ -24,13 +24,13 @@ public class DeleteExpiredEntitiesService : BackgroundService
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
+        await using var scope = _serviceProvider.CreateAsyncScope();
+        var _dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+
         while (!stoppingToken.IsCancellationRequested)
         {
             var expiredDate = DateTime.UtcNow - TimeSpan.FromDays(_options.LifeTimeDays);
             _logger.LogInformation("Очистка волонтёров с истекшей датой существования");
-
-            await using var scope = _serviceProvider.CreateAsyncScope();
-            var _dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
 
             await _dbContext.Volunteers
                 .Where(v => v.IsDeleted && v.DeletionDate <= expiredDate)
