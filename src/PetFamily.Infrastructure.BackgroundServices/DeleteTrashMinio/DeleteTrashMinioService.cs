@@ -5,19 +5,19 @@ using Microsoft.Extensions.Options;
 using PetFamily.Application.Channels;
 using PetFamily.Application.Channels.Models;
 using PetFamily.Application.Minio;
-using PetFamily.Infrastructure.BackgroundServices.Options;
+using PetFamily.Infrastructure.Minio.Options;
 
 namespace PetFamily.Infrastructure.BackgroundServices.DeleteTrashMinio;
 public class DeleteTrashMinioService : BackgroundService
 {
     private readonly ILogger<DeleteTrashMinioService> _logger;
     private readonly IServiceProvider _serviceProvider;
-    private readonly DeleteTrashMinioOptions _options;
+    private readonly MinioOptions _options;
 
     public DeleteTrashMinioService(
         ILogger<DeleteTrashMinioService> logger,
         IServiceProvider serviceProvider,
-        IOptionsMonitor<DeleteTrashMinioOptions> options)
+        IOptionsMonitor<MinioOptions> options)
     {
         _serviceProvider = serviceProvider;
         _logger = logger;
@@ -50,7 +50,7 @@ public class DeleteTrashMinioService : BackgroundService
                 continue;
             }
             
-            await Task.Delay(TimeSpan.FromHours(_options.RepeatTimeHours), stoppingToken);
+            await Task.Delay(TimeSpan.FromHours(_options.RepeatTimeHoursClean), stoppingToken);
         }
     }
 }

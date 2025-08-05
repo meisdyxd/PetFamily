@@ -13,4 +13,6 @@ public class MinioOptions
     public string SecretKey { get; set;} = null!;
     [Required]
     public bool SSL { get; set; }
+    [Required]
+    public int RepeatTimeHoursClean { get; set; }
 }

@@ -22,7 +22,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PetFamily.Infrastructure.Ba
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{36D591C7-65C7-A0D1-1CBC-10CDE441BDC8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PetFamily.UnitTests", "PetFamily.UnitTests\PetFamily.UnitTests.csproj", "{A1704869-92BB-4ED4-971E-6955EFBE3BCC}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PetFamily.Domain.UnitTests", "PetFamily.Domain.UnitTests\PetFamily.Domain.UnitTests.csproj", "{A1704869-92BB-4ED4-971E-6955EFBE3BCC}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PetFamily.Infrastructure.Minio", "PetFamily.Infrastructure.Minio\PetFamily.Infrastructure.Minio.csproj", "{7F3087FD-6316-45C4-811B-68EC4B38D807}"
 EndProject
