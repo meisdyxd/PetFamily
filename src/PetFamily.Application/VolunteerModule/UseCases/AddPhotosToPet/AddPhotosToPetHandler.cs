@@ -1,5 +1,7 @@
 using CSharpFunctionalExtensions;
 using Microsoft.Extensions.Logging;
+using PetFamily.Application.Channels;
+using PetFamily.Application.Channels.Models;
 using PetFamily.Application.Minio;
 using PetFamily.Application.VolunteerModule.Extensions;
 using PetFamily.Application.VolunteerModule.ValidationRules;
@@ -15,15 +17,18 @@ public class AddPhotosToPetHandler
     private readonly IVolunteerRepository _volunteerRepository;
     private readonly IFilesProvider _filesProvider;
     private readonly ILogger<AddPhotosToPetHandler> _logger;
+    private readonly IMessageQueue<IEnumerable<FileMetadata>> _messageQueue;
     private const string Bucket = Constants.StorageBuckets.PhotosBucket;
 
     public AddPhotosToPetHandler(
         IVolunteerRepository volunteerRepository,
         IFilesProvider filesProvider,
+        IMessageQueue<IEnumerable<FileMetadata>> messageQueue,
         ILogger<AddPhotosToPetHandler> logger)
     {
         _volunteerRepository = volunteerRepository;
         _filesProvider = filesProvider;
+        _messageQueue = messageQueue;
         _logger = logger;
     }
     
@@ -90,7 +95,8 @@ public class AddPhotosToPetHandler
             await Task.WhenAll(tasks);
             if (errors.Count > 0)
             {
-                await RollbackUploads(uploadedFiles, cancellationToken);
+                await _messageQueue.WriteAsync(uploadedFiles.Select(x => new FileMetadata(x, Bucket)), cancellationToken);
+
                 _logger.LogError("Ошибка во время загрузки фотографий. Было удалено {count} фотографий", errors.Count);
                 return ErrorResult.Create(errors);
             }
@@ -103,20 +109,11 @@ public class AddPhotosToPetHandler
         }
         catch (Exception ex)
         {
-            await RollbackUploads(uploadedFiles, cancellationToken);
+            await _messageQueue.WriteAsync(uploadedFiles.Select(x => new FileMetadata(x, Bucket)), cancellationToken);
+
             _logger.LogError("Ошибка во время загрузки фотографий. Было удалено {count} фотографий", errors.Count);
         }
 
         return UnitResult.Success<ErrorResult>();
-    }
-    
-    private async Task RollbackUploads(
-        ConcurrentBag<string> uploadedFiles, 
-        CancellationToken cancellationToken)
-    {
-        var deleteTasks = uploadedFiles.Select(filename => 
-            _filesProvider.DeleteFileAsync(Bucket, filename, cancellationToken));
-    
-        await Task.WhenAll(deleteTasks);
     }
 }

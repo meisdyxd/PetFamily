@@ -14,6 +14,7 @@ using PetFamily.Application.VolunteerModule.UseCases.SoftDeleteVolunteer;
 using PetFamily.Application.VolunteerModule.UseCases.UpdateMainInfoVolunteer;
 using PetFamily.Application.VolunteerModule.UseCases.UpdateRequisitsVolunteer;
 using PetFamily.Application.VolunteerModule.UseCases.UpdateSocialNetworksVolunteer;
+using PetFamily.Infrastructure;
 using PetFamily.Infrastructure.BackgroundServices;
 using PetFamily.Infrastructure.Minio;
 using PetFamily.Infrastructure.Persistence;
@@ -31,6 +32,7 @@ public static class DependencyInjection
         services.AddApplication();
         services.AddBackgroundServices(configuration);
         services.AddMinio(configuration);
+        services.AddInfrastructure();
 
         return services;
     }

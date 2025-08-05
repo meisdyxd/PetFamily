@@ -11,6 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\PetFamily.Infrastructure.Minio\PetFamily.Infrastructure.Minio.csproj" />
     <ProjectReference Include="..\PetFamily.Infrastructure.Persistence\PetFamily.Infrastructure.Persistence.csproj" />
   </ItemGroup>
 

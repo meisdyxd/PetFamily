@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using PetFamily.Infrastructure.BackgroundServices.DeleteExpiredEntities;
+using PetFamily.Infrastructure.BackgroundServices.DeleteTrashMinio;
 
 namespace PetFamily.Infrastructure.BackgroundServices;
 
@@ -8,7 +9,9 @@ public static class DependencyInjection
 {
     public static IServiceCollection AddBackgroundServices(this IServiceCollection services, IConfiguration configuration)
     {
-        services.AddDeleteExpiredEntitiesService(configuration);
+        services
+            .AddDeleteExpiredEntitiesService(configuration)
+            .AddDeleteTrashMinioService();
         
         return services;
     }
@@ -27,6 +30,13 @@ public static class DependencyInjection
         services.AddOptions<DeleteExpiredEntitiesOptons>()
             .Bind(configuration.GetSection(DeleteExpiredEntitiesOptons.SectionName))
             .ValidateDataAnnotations();
+
+        return services;
+    }
+
+    private static IServiceCollection AddDeleteTrashMinioService(this IServiceCollection services)
+    {
+        services.AddHostedService<DeleteTrashMinioService>();
 
         return services;
     }
