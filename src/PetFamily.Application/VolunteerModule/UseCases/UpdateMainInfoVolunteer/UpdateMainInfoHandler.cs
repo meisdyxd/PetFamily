@@ -1,5 +1,6 @@
 ﻿using CSharpFunctionalExtensions;
 using Microsoft.Extensions.Logging;
+using PetFamily.Application.Interfaces;
 using PetFamily.Application.VolunteerModule.Extensions;
 using PetFamily.Application.VolunteerModule.ValidationRules;
 using PetFamily.Domain.Shared.Error;
@@ -8,7 +9,7 @@ using PetFamily.Domain.VolunteerManagement.ValueObjects;
 
 namespace PetFamily.Application.VolunteerModule.UseCases.UpdateMainInfoVolunteer;
 
-public class UpdateMainInfoHandler
+public class UpdateMainInfoHandler : ICommandHandler<UpdateMainInfoCommand>
 {
     private readonly IVolunteerRepository _repository;
     private readonly ILogger<UpdateMainInfoHandler> _logger;
@@ -26,7 +27,7 @@ public class UpdateMainInfoHandler
         CancellationToken cancellationToken)
     {
         var validator = new UpdateMainInfoCommandValidator();
-        var validation = validator.Validate(command);
+        var validation = await validator.ValidateAsync(command, cancellationToken);
 
         if (!validation.IsValid)
             return validation.ToError();

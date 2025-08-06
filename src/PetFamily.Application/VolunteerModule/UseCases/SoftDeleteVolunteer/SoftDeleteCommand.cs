@@ -1,3 +1,5 @@
-﻿namespace PetFamily.Application.VolunteerModule.UseCases.SoftDeleteVolunteer;
+﻿using PetFamily.Application.Interfaces;
 
-public record SoftDeleteCommand(Guid Id);
+namespace PetFamily.Application.VolunteerModule.UseCases.SoftDeleteVolunteer;
+
+public record SoftDeleteCommand(Guid Id) : ICommand;

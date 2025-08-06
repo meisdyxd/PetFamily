@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace PetFamily.Infrastructure.BackgroundServices.DeleteExpiredEntities;
+namespace PetFamily.Infrastructure.BackgroundServices.Options;
 
 public class DeleteExpiredEntitiesOptons
 {

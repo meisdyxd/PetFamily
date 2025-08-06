@@ -1,8 +1,7 @@
 ﻿using CSharpFunctionalExtensions;
-using PetFamily.Domain.Shared;
 using PetFamily.Domain.Shared.Error;
 
-namespace PetFamily.Domain.VolunteerManagement.ValueObjects;
+namespace PetFamily.Domain.Shared.ValueObjects;
 
 public record Requisit
 {

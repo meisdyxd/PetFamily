@@ -1,10 +1,11 @@
 ﻿using CSharpFunctionalExtensions;
 using Microsoft.Extensions.Logging;
+using PetFamily.Application.Interfaces;
 using PetFamily.Domain.Shared.Error;
 
 namespace PetFamily.Application.VolunteerModule.UseCases.ForceDeleteVolunteer;
 
-public class ForceDeleteHandler
+public class ForceDeleteHandler: ICommandHandler<ForceDeleteCommand>
 {
     private readonly IVolunteerRepository _repository;
     private readonly ILogger<ForceDeleteHandler> _logger;

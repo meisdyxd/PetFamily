@@ -12,7 +12,6 @@ SerilogRegistration.Execute(configurations);
 services
     .AddLayers(configurations)
     .AddSwagger()
-    .AddHandlers()
     .AddSerilog()
     .AddRepositories()
     .AddControllers();

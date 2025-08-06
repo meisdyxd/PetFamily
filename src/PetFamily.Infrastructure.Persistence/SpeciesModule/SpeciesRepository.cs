@@ -1,14 +1,15 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using PetFamily.Application.SpeciesModule;
 using PetFamily.Domain.SpeciesManagement;
+using PetFamily.Infrastructure.Persistence.Contexts;
 
 namespace PetFamily.Infrastructure.Persistence.SpeciesModule;
 
 public class SpeciesRepository: ISpeciesRepository
 {
-    private readonly ApplicationDbContext _dbContext;
+    private readonly WriteDbContext _dbContext;
 
-    public SpeciesRepository(ApplicationDbContext dbContext)
+    public SpeciesRepository(WriteDbContext dbContext)
     {
         _dbContext = dbContext;
     }

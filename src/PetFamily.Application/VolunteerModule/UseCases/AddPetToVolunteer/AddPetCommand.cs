@@ -1,4 +1,5 @@
-﻿using PetFamily.Contracts.VolunteerContracts.DTOs;
+﻿using PetFamily.Application.Interfaces;
+using PetFamily.Contracts.VolunteerContracts.DTOs;
 
 namespace PetFamily.Application.VolunteerModule.UseCases.AddPetToVolunteer;
 
@@ -16,4 +17,4 @@ public record AddPetCommand(
     TelephoneNumberDto OwnerTelephoneNumber,
     bool IsCastrated,
     DateTime BirthDate,
-    bool IsVaccinated);
+    bool IsVaccinated): ICommand<Guid>;

@@ -1,5 +1,6 @@
 ﻿using CSharpFunctionalExtensions;
 using Microsoft.Extensions.Logging;
+using PetFamily.Application.Interfaces;
 using PetFamily.Application.VolunteerModule.Extensions;
 using PetFamily.Application.VolunteerModule.ValidationRules;
 using PetFamily.Domain.Shared.Error;
@@ -7,7 +8,7 @@ using PetFamily.Domain.VolunteerManagement.ValueObjects;
 
 namespace PetFamily.Application.VolunteerModule.UseCases.UpdateSocialNetworksVolunteer;
 
-public class UpdateSocialNetworksHandler
+public class UpdateSocialNetworksHandler : ICommandHandler<UpdateSocialNetworksCommand>
 {
     private readonly IVolunteerRepository _repository;
     private readonly ILogger<UpdateSocialNetworksHandler> _logger;
@@ -25,7 +26,7 @@ public class UpdateSocialNetworksHandler
         CancellationToken cancellationToken)
     {
         var validator = new UpdateSocialNetworksCommandValidator();
-        var validation = validator.Validate(command);
+        var validation = await validator.ValidateAsync(command, cancellationToken);
 
         if (!validation.IsValid)
             return validation.ToError();

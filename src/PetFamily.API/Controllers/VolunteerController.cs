@@ -2,6 +2,9 @@
 using PetFamily.API.Contracts.Requests;
 using PetFamily.API.Extensions;
 using PetFamily.API.Processors;
+using PetFamily.API.Requests.VolunteerRequests;
+using PetFamily.Application.VolunteerModule.Queries.GetById;
+using PetFamily.Application.VolunteerModule.Queries.GetWithPagination;
 using PetFamily.Application.VolunteerModule.UseCases.AddPetToVolunteer;
 using PetFamily.Application.VolunteerModule.UseCases.AddPhotosToPet;
 using PetFamily.Application.VolunteerModule.UseCases.CreateVolunteer;
@@ -13,14 +16,41 @@ using PetFamily.Application.VolunteerModule.UseCases.SoftDeleteVolunteer;
 using PetFamily.Application.VolunteerModule.UseCases.UpdateMainInfoVolunteer;
 using PetFamily.Application.VolunteerModule.UseCases.UpdateRequisitsVolunteer;
 using PetFamily.Application.VolunteerModule.UseCases.UpdateSocialNetworksVolunteer;
-using PetFamily.Contracts.VolunteerContracts.Extensions;
-using PetFamily.Contracts.VolunteerContracts.Request;
 
 namespace PetFamily.API.Controllers;
 
 
 public class VolunteerController : MainController
 {
+    [HttpGet]
+    public async Task<IActionResult> Get(
+        [FromQuery] GetWithPaginationRequest request,
+        [FromServices] GetWithPaginationHandler handler,
+        CancellationToken cancellationToken)
+    {
+        var query = request.ToQuery(request.PaginatedRequest);
+        var result = await handler.Handle(query, cancellationToken);
+        
+        if (result.IsFailure)
+            return result.Error.ToResponse();
+        
+        return Ok(result.Value);
+    }
+    [HttpGet("{id:guid}")]
+    public async Task<IActionResult> Get(
+        Guid id,
+        [FromServices] GetByIdHandler handler,
+        CancellationToken cancellationToken)
+    {
+        var query = new GetByIdQuery(id);
+        var result = await handler.Handle(query, cancellationToken);
+        
+        if (result.IsFailure)
+            return result.Error.ToResponse();
+        
+        return Ok(result.Value);
+    }
+    
     [HttpPost]
     public async Task<IActionResult> Create(
         [FromServices] CreateVolunteerHandler handler,

@@ -1,4 +1,5 @@
-﻿using PetFamily.Contracts.VolunteerContracts.DTOs;
+﻿using PetFamily.Application.Interfaces;
+using PetFamily.Contracts.VolunteerContracts.DTOs;
 
 namespace PetFamily.Application.VolunteerModule.UseCases.UpdateMainInfoVolunteer;
 
@@ -8,4 +9,4 @@ public record UpdateMainInfoCommand(
     EmailDto Email,
     DescriptionDto Description,
     int EmployeeExperience,
-    TelephoneNumberDto TelephoneNumber);
+    TelephoneNumberDto TelephoneNumber) : ICommand;
