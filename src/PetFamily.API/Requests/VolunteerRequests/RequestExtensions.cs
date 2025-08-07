@@ -1,10 +1,15 @@
-﻿using PetFamily.Application.VolunteerModule.Queries.GetWithPagination;
+﻿using PetFamily.API.Contracts.Requests;
+using PetFamily.Application.VolunteerModule.Queries.GetWithPagination;
 using PetFamily.Application.VolunteerModule.UseCases.AddPetToVolunteer;
+using PetFamily.Application.VolunteerModule.UseCases.AddPhotosToPet;
 using PetFamily.Application.VolunteerModule.UseCases.CreateVolunteer;
+using PetFamily.Application.VolunteerModule.UseCases.DeletePhotosPet;
+using PetFamily.Application.VolunteerModule.UseCases.MovePetPosition;
 using PetFamily.Application.VolunteerModule.UseCases.UpdateMainInfoVolunteer;
 using PetFamily.Application.VolunteerModule.UseCases.UpdateRequisitsVolunteer;
 using PetFamily.Application.VolunteerModule.UseCases.UpdateSocialNetworksVolunteer;
 using PetFamily.Contracts.Contracts;
+using PetFamily.Contracts.Contracts.FormFIleDtos;
 
 namespace PetFamily.API.Requests.VolunteerRequests;
 
@@ -81,5 +86,40 @@ public static class RequestExtensions
         return new(
             paginatedRequest.Page, 
             paginatedRequest.PageSize);
+    }
+
+    public static AddPhotosToPetCommand ToCommand(
+        this AddPhotosToPetRequest request,
+        Guid id,
+        Guid petId,
+        List<CreateFileDto> files)
+    {
+        return new(
+            id,
+            petId,
+            files);
+    }
+    
+    public static DeletePhotosPetCommand ToCommand(
+        this DeletePhotosPetRequest request,
+        Guid id,
+        Guid petId)
+    {
+        return new(
+            id,
+            petId,
+            request.Filenames);
+    }
+
+    public static MovePetPositionCommand ToCommand(
+        this MovePetPositionRequest request,
+        Guid id,
+        Guid petId)
+    {
+        return new(
+            id,
+            petId,
+            request.Position,
+            request.Direction);
     }
 }

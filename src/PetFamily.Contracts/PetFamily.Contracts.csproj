@@ -7,7 +7,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="VolunteerContracts\Request\" />
+    <Compile Remove="VolunteerContracts\Request\**" />
+    <EmbeddedResource Remove="VolunteerContracts\Request\**" />
+    <None Remove="VolunteerContracts\Request\**" />
   </ItemGroup>
 
 </Project>

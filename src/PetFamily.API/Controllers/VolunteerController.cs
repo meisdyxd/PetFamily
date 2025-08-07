@@ -186,13 +186,15 @@ public class VolunteerController : MainController
         await using var processor = new FormFIleProcessor();
         var files = processor.Process(request.Files);
         
-        var command = new AddPhotosToPetCommand(
+        var command = request.ToCommand(
             id, 
             petId, 
             files);
 
         var result = await handler.Handle(command, cancellationToken);
-        
+        if (result.IsFailure)
+            return result.Error.ToResponse();
+
         return NoContent();
     }
     
@@ -204,30 +206,28 @@ public class VolunteerController : MainController
         [FromRoute] Guid id,
         CancellationToken cancellationToken)
     {
-        var command = new DeletePhotosPetCommand(
+        var command = request.ToCommand(
             id, 
-            petId, 
-            request.Filenames);
+            petId);
 
         var result = await handler.Handle(command, cancellationToken);
-        
+        if (result.IsFailure)
+            return result.Error.ToResponse();
+
         return NoContent();
     }
 
     [HttpPut("{id:guid}/pet/{petId:guid}/position")]
     public async Task<IActionResult> MovePetPosition(
         [FromServices] MovePetPositionHandler handler,
-        [FromQuery] int? position,
-        [FromQuery] string? direction,
+        MovePetPositionRequest request,
         [FromRoute] Guid id,
         [FromRoute] Guid petId,
         CancellationToken cancellationToken)
     {
-        var command = new MovePetPositionCommand(
+        var command = request.ToCommand(
             id,
-            petId,
-            Position: position,
-            Direction: direction);
+            petId);
         
         var result = await handler.Handle(command, cancellationToken);
         if (result.IsFailure)
