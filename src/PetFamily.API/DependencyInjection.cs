@@ -3,21 +3,11 @@ using PetFamily.API.Middlewares;
 using PetFamily.Application;
 using PetFamily.Application.SpeciesModule;
 using PetFamily.Application.VolunteerModule;
-using PetFamily.Application.VolunteerModule.UseCases.AddPetToVolunteer;
-using PetFamily.Application.VolunteerModule.UseCases.AddPhotosToPet;
-using PetFamily.Application.VolunteerModule.UseCases.CreateVolunteer;
-using PetFamily.Application.VolunteerModule.UseCases.DeletePhotosPet;
-using PetFamily.Application.VolunteerModule.UseCases.ForceDeleteVolunteer;
-using PetFamily.Application.VolunteerModule.UseCases.MovePetPosition;
-using PetFamily.Application.VolunteerModule.UseCases.RestoreVolunteer;
-using PetFamily.Application.VolunteerModule.UseCases.SoftDeleteVolunteer;
-using PetFamily.Application.VolunteerModule.UseCases.UpdateMainInfoVolunteer;
-using PetFamily.Application.VolunteerModule.UseCases.UpdateRequisitsVolunteer;
-using PetFamily.Application.VolunteerModule.UseCases.UpdateSocialNetworksVolunteer;
 using PetFamily.Infrastructure;
 using PetFamily.Infrastructure.BackgroundServices;
 using PetFamily.Infrastructure.Minio;
 using PetFamily.Infrastructure.Persistence;
+using PetFamily.Infrastructure.Persistence.Contexts;
 using PetFamily.Infrastructure.Persistence.SpeciesModule;
 using PetFamily.Infrastructure.Persistence.VolunteerModule;
 using Serilog;
@@ -37,23 +27,6 @@ public static class DependencyInjection
         return services;
     }
 
-    public static IServiceCollection AddHandlers(this IServiceCollection services)
-    {
-        services.AddScoped<CreateVolunteerHandler>();
-        services.AddScoped<UpdateMainInfoHandler>();
-        services.AddScoped<UpdateRequisitsHandler>();
-        services.AddScoped<UpdateSocialNetworksHandler>();
-        services.AddScoped<SoftDeleteHandler>();
-        services.AddScoped<ForceDeleteHandler>();
-        services.AddScoped<RestoreHandler>();
-        services.AddScoped<AddPetHandler>();
-        services.AddScoped<AddPhotosToPetHandler>();
-        services.AddScoped<DeletePhotosPetHandler>();
-        services.AddScoped<MovePetPositionHandler>();
-
-        return services;
-    }
-
     public static IServiceCollection AddRepositories(this IServiceCollection services)
     {
         services.AddScoped<IVolunteerRepository, VolunteerRepository>();
@@ -69,7 +42,7 @@ public static class DependencyInjection
         return services;
     }
 
-    public static WebApplication UseConfigureSwagger(this WebApplication app)
+    private static WebApplication UseConfigureSwagger(this WebApplication app)
     {
         if (app.Environment.IsDevelopment())
         {
@@ -80,12 +53,12 @@ public static class DependencyInjection
         return app;
     }
 
-    public async static Task ApplyMigrations(this WebApplication app)
+    public static async Task ApplyMigrations(this WebApplication app)
     {
         if (app.Environment.IsDevelopment())
         {
             await using var scope = app.Services.CreateAsyncScope();
-            var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+            var dbContext = scope.ServiceProvider.GetRequiredService<WriteDbContext>();
 
             await dbContext.Database.MigrateAsync();
         }

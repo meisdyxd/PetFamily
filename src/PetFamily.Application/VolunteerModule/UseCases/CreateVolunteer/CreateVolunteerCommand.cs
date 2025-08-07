@@ -1,4 +1,6 @@
-﻿using PetFamily.Contracts.VolunteerContracts.DTOs;
+﻿using PetFamily.Application.Interfaces;
+using PetFamily.Contracts.VolunteerContracts.DTOs;
+using PetFamily.Contracts.VolunteerContracts.Response;
 
 namespace PetFamily.Application.VolunteerModule.UseCases.CreateVolunteer;
 
@@ -9,4 +11,4 @@ public record CreateVolunteerCommand(
     int EmployeeExperience,
     TelephoneNumberDto TelephoneNumber,
     IEnumerable<SocialNetworkDto>? SocialNetworks = null,
-    IEnumerable<RequisitDto>? Requisits = null);
+    IEnumerable<RequisitDto>? Requisits = null) : ICommand<CreateVolunteerResponse>;

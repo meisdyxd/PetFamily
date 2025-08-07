@@ -1,10 +1,11 @@
 ﻿using CSharpFunctionalExtensions;
 using Microsoft.Extensions.Logging;
+using PetFamily.Application.Interfaces;
 using PetFamily.Domain.Shared.Error;
 
 namespace PetFamily.Application.VolunteerModule.UseCases.RestoreVolunteer;
 
-public class RestoreHandler
+public class RestoreHandler: ICommandHandler<RestoreCommand>
 {
     private readonly IVolunteerRepository _repository;
     private readonly ILogger<RestoreHandler> _logger;

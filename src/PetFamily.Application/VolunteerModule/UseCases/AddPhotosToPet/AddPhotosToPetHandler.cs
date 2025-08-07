@@ -9,10 +9,11 @@ using PetFamily.Domain.Shared;
 using PetFamily.Domain.Shared.Error;
 using PetFamily.Domain.VolunteerManagement.ValueObjects;
 using System.Collections.Concurrent;
+using PetFamily.Application.Interfaces;
 
 namespace PetFamily.Application.VolunteerModule.UseCases.AddPhotosToPet;
 
-public class AddPhotosToPetHandler
+public class AddPhotosToPetHandler: ICommandHandler<AddPhotosToPetCommand>
 {
     private readonly IVolunteerRepository _volunteerRepository;
     private readonly IFilesProvider _filesProvider;

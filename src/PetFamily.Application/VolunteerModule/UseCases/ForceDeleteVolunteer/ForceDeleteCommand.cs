@@ -1,3 +1,5 @@
-﻿namespace PetFamily.Application.VolunteerModule.UseCases.ForceDeleteVolunteer;
+﻿using PetFamily.Application.Interfaces;
 
-public record ForceDeleteCommand(Guid Id);
+namespace PetFamily.Application.VolunteerModule.UseCases.ForceDeleteVolunteer;
+
+public record ForceDeleteCommand(Guid Id) : ICommand;

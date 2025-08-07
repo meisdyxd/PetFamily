@@ -1,12 +1,13 @@
 using CSharpFunctionalExtensions;
 using Microsoft.Extensions.Logging;
+using PetFamily.Application.Interfaces;
 using PetFamily.Application.Minio;
 using PetFamily.Domain.Shared;
 using PetFamily.Domain.Shared.Error;
 
 namespace PetFamily.Application.VolunteerModule.UseCases.DeletePhotosPet;
 
-public class DeletePhotosPetHandler
+public class DeletePhotosPetHandler: ICommandHandler<DeletePhotosPetCommand>
 {
     private readonly IVolunteerRepository _repository;
     private readonly ILogger<DeletePhotosPetHandler> _logger;

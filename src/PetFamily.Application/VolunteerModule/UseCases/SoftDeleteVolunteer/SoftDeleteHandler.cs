@@ -1,10 +1,11 @@
 ﻿using CSharpFunctionalExtensions;
 using Microsoft.Extensions.Logging;
+using PetFamily.Application.Interfaces;
 using PetFamily.Domain.Shared.Error;
 
 namespace PetFamily.Application.VolunteerModule.UseCases.SoftDeleteVolunteer;
 
-public class SoftDeleteHandler
+public class SoftDeleteHandler : ICommandHandler<SoftDeleteCommand>
 {
     private readonly IVolunteerRepository _repository;
     private readonly ILogger<SoftDeleteHandler> _logger;

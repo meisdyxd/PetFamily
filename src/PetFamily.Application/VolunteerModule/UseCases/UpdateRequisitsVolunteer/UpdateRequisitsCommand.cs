@@ -1,7 +1,9 @@
-﻿using PetFamily.Contracts.VolunteerContracts.DTOs;
+﻿using PetFamily.Application.Interfaces;
+using PetFamily.Contracts.VolunteerContracts.DTOs;
 
 namespace PetFamily.Application.VolunteerModule.UseCases.UpdateRequisitsVolunteer;
 
 public record UpdateRequisitsCommand(
     Guid Id,
-    IEnumerable<RequisitDto>? Requisits = null);
+    IEnumerable<RequisitDto>? Requisits = null)
+    : ICommand;

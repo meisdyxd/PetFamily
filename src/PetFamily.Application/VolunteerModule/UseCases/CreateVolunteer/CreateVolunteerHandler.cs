@@ -1,5 +1,6 @@
 ﻿using CSharpFunctionalExtensions;
 using Microsoft.Extensions.Logging;
+using PetFamily.Application.Interfaces;
 using PetFamily.Application.VolunteerModule.Extensions;
 using PetFamily.Application.VolunteerModule.ValidationRules;
 using PetFamily.Contracts.VolunteerContracts.Response;
@@ -10,7 +11,7 @@ using PetFamily.Domain.VolunteerManagement.ValueObjects;
 
 namespace PetFamily.Application.VolunteerModule.UseCases.CreateVolunteer;
 
-public class CreateVolunteerHandler
+public class CreateVolunteerHandler: ICommandHandler<CreateVolunteerCommand, CreateVolunteerResponse>
 {
     private readonly IVolunteerRepository _repository;
     private readonly ILogger<CreateVolunteerHandler> _logger;
@@ -28,7 +29,7 @@ public class CreateVolunteerHandler
         CancellationToken cancellationToken)
     {
         var validator = new CreateVolunteerCommandValidator();
-        var validation = validator.Validate(command);
+        var validation = await validator.ValidateAsync(command, cancellationToken);
 
         if (!validation.IsValid)
             return validation.ToError();

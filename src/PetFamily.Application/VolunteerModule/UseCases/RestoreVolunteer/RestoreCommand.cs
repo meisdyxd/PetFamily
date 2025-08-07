@@ -1,3 +1,5 @@
-﻿namespace PetFamily.Application.VolunteerModule.UseCases.RestoreVolunteer;
+﻿using PetFamily.Application.Interfaces;
 
-public record RestoreCommand(Guid Id);
+namespace PetFamily.Application.VolunteerModule.UseCases.RestoreVolunteer;
+
+public record RestoreCommand(Guid Id): ICommand;

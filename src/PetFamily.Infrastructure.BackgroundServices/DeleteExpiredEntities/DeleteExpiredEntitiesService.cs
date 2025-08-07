@@ -3,7 +3,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using PetFamily.Infrastructure.BackgroundServices.Options;
 using PetFamily.Infrastructure.Persistence;
+using PetFamily.Infrastructure.Persistence.Contexts;
 
 namespace PetFamily.Infrastructure.BackgroundServices.DeleteExpiredEntities;
 public class DeleteExpiredEntitiesService : BackgroundService
@@ -25,7 +27,7 @@ public class DeleteExpiredEntitiesService : BackgroundService
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
         await using var scope = _serviceProvider.CreateAsyncScope();
-        var _dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+        var _dbContext = scope.ServiceProvider.GetRequiredService<WriteDbContext>();
 
         while (!stoppingToken.IsCancellationRequested)
         {

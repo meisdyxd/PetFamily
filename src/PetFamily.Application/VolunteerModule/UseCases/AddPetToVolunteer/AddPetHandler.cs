@@ -1,4 +1,5 @@
 ﻿using CSharpFunctionalExtensions;
+using PetFamily.Application.Interfaces;
 using PetFamily.Application.SpeciesModule;
 using PetFamily.Application.VolunteerModule.Extensions;
 using PetFamily.Application.VolunteerModule.ValidationRules;
@@ -9,7 +10,7 @@ using PetFamily.Domain.VolunteerManagement.ValueObjects;
 
 namespace PetFamily.Application.VolunteerModule.UseCases.AddPetToVolunteer;
 
-public class AddPetHandler
+public class AddPetHandler: ICommandHandler<AddPetCommand, Guid>
 {
     private readonly IVolunteerRepository _volunteerRepository;
     private readonly ISpeciesRepository _speciesRepository;
@@ -27,7 +28,7 @@ public class AddPetHandler
         CancellationToken cancellationToken)
     {
         var validator = new AddPetCommandValidator();
-        var validation = validator.Validate(command);
+        var validation = await validator.ValidateAsync(command, cancellationToken);
 
         if (!validation.IsValid)
             return validation.ToError();

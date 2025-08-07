@@ -1,14 +1,15 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using PetFamily.Application.VolunteerModule;
 using PetFamily.Domain.VolunteerManagement;
+using PetFamily.Infrastructure.Persistence.Contexts;
 
 namespace PetFamily.Infrastructure.Persistence.VolunteerModule;
 
 public class VolunteerRepository: IVolunteerRepository
 {
-    private readonly ApplicationDbContext _dbContext;
+    private readonly WriteDbContext _dbContext;
 
-    public VolunteerRepository(ApplicationDbContext dbContext)
+    public VolunteerRepository(WriteDbContext dbContext)
     {
         _dbContext = dbContext;
     }

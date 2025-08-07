@@ -1,5 +1,6 @@
 using CSharpFunctionalExtensions;
 using Microsoft.Extensions.Logging;
+using PetFamily.Application.Interfaces;
 using PetFamily.Application.VolunteerModule.Extensions;
 using PetFamily.Application.VolunteerModule.ValidationRules;
 using PetFamily.Domain.Shared;
@@ -7,7 +8,7 @@ using PetFamily.Domain.Shared.Error;
 
 namespace PetFamily.Application.VolunteerModule.UseCases.MovePetPosition;
 
-public class MovePetPositionHandler
+public class MovePetPositionHandler: ICommandHandler<MovePetPositionCommand>
 {
     private readonly IVolunteerRepository _repository;
     private readonly ILogger<MovePetPositionHandler> _logger;
